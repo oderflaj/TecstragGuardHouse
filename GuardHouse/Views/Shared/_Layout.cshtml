@@ -1,0 +1,29 @@
+﻿@{
+
+
+    if (Session["id"] == null && System.Configuration.ConfigurationManager.AppSettings.Get("login").ToString().Equals("1"))
+    {
+        
+        @RenderBody()
+    }
+    else
+    {
+        <!DOCTYPE html>
+
+        <html>
+        @RenderPage("~/Views/Shared/_Head.cshtml")
+            <body class="hold-transition sidebar-mini wysihtml5-supported skin-yellow">
+                <div class="wrapper">
+                    @RenderPage("~/Views/Shared/_Header.cshtml")
+                    @RenderPage("~/Views/Shared/_Sidebar.cshtml")
+                    <!-- Content Wrapper. Contains page content -->
+                    <div class="content-wrapper">
+                        @RenderBody()
+                    </div><!-- /.content-wrapper -->
+                @RenderPage("~/Views/Shared/_Footer.cshtml")
+                </div><!-- ./wrapper -->
+                @RenderPage("~/Views/Shared/_Foot.cshtml")
+            </body>
+        </html>
+    }
+}

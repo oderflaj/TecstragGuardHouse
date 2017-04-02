@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+    if (Session["menu"] == null)
+    {
+        Session.Abandon();
+        Response.Redirect("~/User/Logout");
+        return;
+    }
+    //Se obtien el orden del menu establecido por el usuario.
+    string[] orderMenu = System.Configuration.ConfigurationManager.AppSettings.Get("orden").ToString().Split('|');
+    //Se obtienen los modulos que se asignaron al perfil del usuario y que originalmente se habian cargado en sesión cuando se logeo el usuario
+    List<GuardHouse.Models.modulo> menu = (List<GuardHouse.Models.modulo>)Session["menu"];
+
+    var m = menu.Where(mn => mn.nombre.Equals(ViewContext.RouteData.Values["action"].ToString())).FirstOrDefault();
+
+    //var ini = menu.Where(i => i.nombre.Equals(orderMenu[0].ToString())).FirstOrDefault();
+
+    GuardHouse.Models.modulo ini = new GuardHouse.Models.modulo();
+
+    foreach (var ix in orderMenu)
+    {
+        ini = menu.Where(i => i.nombre.Equals(ix.ToString())).FirstOrDefault();
+
+        if (ini != null)
+        {
+            break;
+        }
+    }
+    string intro = m.intro.ToString();
+}
+<section class="content-header">
+    <h1>
+        @*Se escribe el titulo del modulo y una pequeña introducción*@
+        @m.texto.ToString()
+        <small>@intro</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            @*Se establece la pagina de inicio del sistema.*@
+        <a href="@Url.Action(ini.nombre.ToString(),"Modulos")">
+            <i class="fa fa-home"></i> Inicio
+        </a>
+    </li>
+    @{// Se construye mapa del sitio.
+        string map = m.texto.ToString();
+        int mp = int.Parse(m.premodulo.ToString());
+        do
+        {
+
+            if (int.Parse(m.premodulo.ToString()) > 0)
+            {
+                m = menu.Where(mn => mn.id == mp).FirstOrDefault();
+                <li>
+                    <a href="@Url.Action(m.nombre.ToString(),"Modulos")">
+                        @m.texto.ToString()
+                    </a>
+                </li>
+                mp = int.Parse(m.premodulo.ToString());
+            }
+        }
+        while (mp != 0);
+
+    }
+    <li class="active">@map</li>
+</ol>
+</section>

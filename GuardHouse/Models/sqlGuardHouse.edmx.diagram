@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="10c24ab5762242a99ddc638313c1064c" Name="Diagram1">
+        <EntityTypeShape EntityType="guardhouseModel.visita" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="guardhouseModel.visitante" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="guardhouseModel.vehiculo" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="guardhouseModel.guardhouse" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="guardhouseModel.guardia" Width="1.5" PointX="5.5" PointY="5.75" />
+        <EntityTypeShape EntityType="guardhouseModel.modulo" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="guardhouseModel.perfil" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="guardhouseModel.puerta" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="guardhouseModel.turno" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="guardhouseModel.usuario" Width="1.5" PointX="7.75" PointY="7.75" />
+        <EntityTypeShape EntityType="guardhouseModel.sysdiagrams" Width="1.5" PointX="3.375" PointY="9.75" />
+        <AssociationConnector Association="guardhouseModel.FK_guardia_usuario" />
+        <AssociationConnector Association="guardhouseModel.FK_turno_puerta" />
+        <AssociationConnector Association="guardhouseModel.FK_turno_usuario" />
+        <AssociationConnector Association="guardhouseModel.FK_vehiculo_visitante" />
+        <AssociationConnector Association="guardhouseModel.FK_visita_visitante" />
+        <EntityTypeShape EntityType="guardhouseModel.usuariobitacora" Width="1.5" PointX="10" PointY="7.625" />
+        <AssociationConnector Association="guardhouseModel.FK_usuariobitacora_usuario" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

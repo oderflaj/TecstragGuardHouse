@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="guardhouseModelStoreContainer" CdmEntityContainer="guardhouseEntities">
+    <EntitySetMapping Name="visita">
+      <EntityTypeMapping TypeName="guardhouseModel.visita">
+        <MappingFragment StoreEntitySet="visita">
+          <ScalarProperty Name="detalle2" ColumnName="detalle2" />
+          <ScalarProperty Name="detalle1" ColumnName="detalle1" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fecEntrada" ColumnName="fecEntrada" />
+          <ScalarProperty Name="horaEntrada" ColumnName="horaEntrada" />
+          <ScalarProperty Name="fecSalida" ColumnName="fecSalida" />
+          <ScalarProperty Name="horaSalida" ColumnName="horaSalida" />
+          <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
+          <ScalarProperty Name="idpropiedad" ColumnName="idpropiedad" />
+          <ScalarProperty Name="estatuspropiedad" ColumnName="estatuspropiedad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="visitante">
+      <EntityTypeMapping TypeName="guardhouseModel.visitante">
+        <MappingFragment StoreEntitySet="visitante">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="numeroid" ColumnName="numeroid" />
+          <ScalarProperty Name="tipoid" ColumnName="tipoid" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="foto" ColumnName="foto" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vehiculo">
+      <EntityTypeMapping TypeName="guardhouseModel.vehiculo">
+        <MappingFragment StoreEntitySet="vehiculo">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="placa" ColumnName="placa" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="submarca" ColumnName="submarca" />
+          <ScalarProperty Name="color" ColumnName="color" />
+          <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="guardhouse">
+      <EntityTypeMapping TypeName="guardhouseModel.guardhouse">
+        <MappingFragment StoreEntitySet="guardhouse">
+          <ScalarProperty Name="condominiositio" ColumnName="condominiositio" />
+          <ScalarProperty Name="clave" ColumnName="clave" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="telefonoresponsable" ColumnName="telefonoresponsable" />
+          <ScalarProperty Name="emailresponsable" ColumnName="emailresponsable" />
+          <ScalarProperty Name="responsable" ColumnName="responsable" />
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="condominio" ColumnName="condominio" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="guardia">
+      <EntityTypeMapping TypeName="guardhouseModel.guardia">
+        <MappingFragment StoreEntitySet="guardia">
+          <ScalarProperty Name="fecharegistro" ColumnName="fecharegistro" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="empresa" ColumnName="empresa" />
+          <ScalarProperty Name="puesto" ColumnName="puesto" />
+          <ScalarProperty Name="edocivil" ColumnName="edocivil" />
+          <ScalarProperty Name="sexo" ColumnName="sexo" />
+          <ScalarProperty Name="edad" ColumnName="edad" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="modulo">
+      <EntityTypeMapping TypeName="guardhouseModel.modulo">
+        <MappingFragment StoreEntitySet="modulo">
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="agrupador" ColumnName="agrupador" />
+          <ScalarProperty Name="perfiles" ColumnName="perfiles" />
+          <ScalarProperty Name="premodulo" ColumnName="premodulo" />
+          <ScalarProperty Name="icono" ColumnName="icono" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="intro" ColumnName="intro" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="perfil">
+      <EntityTypeMapping TypeName="guardhouseModel.perfil">
+        <MappingFragment StoreEntitySet="perfil">
+          <ScalarProperty Name="defaultmodulo" ColumnName="defaultmodulo" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="valor" ColumnName="valor" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="puerta">
+      <EntityTypeMapping TypeName="guardhouseModel.puerta">
+        <MappingFragment StoreEntitySet="puerta">
+          <ScalarProperty Name="geolocalizacion" ColumnName="geolocalizacion" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="no" ColumnName="no" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="turno">
+      <EntityTypeMapping TypeName="guardhouseModel.turno">
+        <MappingFragment StoreEntitySet="turno">
+          <ScalarProperty Name="horas" ColumnName="horas" />
+          <ScalarProperty Name="horaFin" ColumnName="horaFin" />
+          <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="noTurno" ColumnName="noTurno" />
+          <ScalarProperty Name="idPuerta" ColumnName="idPuerta" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="guardhouseModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="perfil" ColumnName="perfil" />
+          <ScalarProperty Name="estatus" ColumnName="estatus" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="guardhouseModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="guardhouseModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="guardhouseModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="guardhouseModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="guardhouseModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="guardhouseModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="guardhouseModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="guardhouseModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="guardhouseModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="guardhouseModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="usuariobitacora">
+      <EntityTypeMapping TypeName="guardhouseModel.usuariobitacora">
+        <MappingFragment StoreEntitySet="usuariobitacora">
+          <ScalarProperty Name="detalle" ColumnName="detalle" />
+          <ScalarProperty Name="infoguardia" ColumnName="infoguardia" />
+          <ScalarProperty Name="hora" ColumnName="hora" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="accion" ColumnName="accion" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

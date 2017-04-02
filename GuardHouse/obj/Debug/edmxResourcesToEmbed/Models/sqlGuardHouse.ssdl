@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="guardhouseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="guardhouse">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="condominio" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="direccion" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="telefono" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="responsable" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="emailresponsable" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="telefonoresponsable" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="clave" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="condominiositio" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="guardia">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idusuario" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="edad" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="sexo" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="edocivil" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="puesto" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="empresa" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="fecharegistro" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="modulo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" />
+    <Property Name="texto" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="intro" Type="varchar" MaxLength="130" />
+    <Property Name="descripcion" Type="varchar" MaxLength="150" />
+    <Property Name="icono" Type="varchar" MaxLength="30" />
+    <Property Name="premodulo" Type="int" />
+    <Property Name="perfiles" Type="varchar" MaxLength="150" />
+    <Property Name="agrupador" Type="int" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="perfil">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="descripcion" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="valor" Type="int" Nullable="false" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="defaultmodulo" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="puerta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="direccion" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="no" Type="int" Nullable="false" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="geolocalizacion" Type="varchar" MaxLength="800" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="turno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idUsuario" Type="int" Nullable="false" />
+    <Property Name="idPuerta" Type="int" Nullable="false" />
+    <Property Name="noTurno" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="horaInicio" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="horaFin" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="horas" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="perfil" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="usuariobitacora">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idusuario" Type="int" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="accion" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="detalle" Type="varchar" MaxLength="600" Nullable="false" />
+    <Property Name="fecha" Type="date" Nullable="false" />
+    <Property Name="hora" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="infoguardia" Type="varchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vehiculo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="placa" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="marca" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="submarca" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="color" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="idvisitante" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="visita">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fecEntrada" Type="date" Nullable="false" />
+    <Property Name="horaEntrada" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="fecSalida" Type="date" />
+    <Property Name="horaSalida" Type="varchar" MaxLength="8" />
+    <Property Name="idvisitante" Type="int" Nullable="false" />
+    <Property Name="idpropiedad" Type="int" Nullable="false" />
+    <Property Name="detalle1" Type="varchar" MaxLength="500" />
+    <Property Name="detalle2" Type="varchar" MaxLength="500" />
+    <Property Name="estatuspropiedad" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="visitante">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="numeroid" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="tipoid" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="foto" Type="nvarchar(max)" />
+    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_guardia_usuario">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="guardia" Type="Self.guardia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="guardia">
+        <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_turno_puerta">
+    <End Role="puerta" Type="Self.puerta" Multiplicity="1" />
+    <End Role="turno" Type="Self.turno" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="puerta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="turno">
+        <PropertyRef Name="idPuerta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_turno_usuario">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="turno" Type="Self.turno" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="turno">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuariobitacora_usuario">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="usuariobitacora" Type="Self.usuariobitacora" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="usuariobitacora">
+        <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_vehiculo_visitante">
+    <End Role="visitante" Type="Self.visitante" Multiplicity="1" />
+    <End Role="vehiculo" Type="Self.vehiculo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="visitante">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vehiculo">
+        <PropertyRef Name="idvisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_visita_visitante">
+    <End Role="visitante" Type="Self.visitante" Multiplicity="1" />
+    <End Role="visita" Type="Self.visita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="visitante">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visita">
+        <PropertyRef Name="idvisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="guardhouseModelStoreContainer">
+    <EntitySet Name="guardhouse" EntityType="Self.guardhouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="guardia" EntityType="Self.guardia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="modulo" EntityType="Self.modulo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="perfil" EntityType="Self.perfil" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="puerta" EntityType="Self.puerta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="turno" EntityType="Self.turno" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuariobitacora" EntityType="Self.usuariobitacora" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vehiculo" EntityType="Self.vehiculo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="visita" EntityType="Self.visita" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="visitante" EntityType="Self.visitante" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_guardia_usuario" Association="Self.FK_guardia_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="guardia" EntitySet="guardia" />
+    </AssociationSet>
+    <AssociationSet Name="FK_turno_puerta" Association="Self.FK_turno_puerta">
+      <End Role="puerta" EntitySet="puerta" />
+      <End Role="turno" EntitySet="turno" />
+    </AssociationSet>
+    <AssociationSet Name="FK_turno_usuario" Association="Self.FK_turno_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="turno" EntitySet="turno" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuariobitacora_usuario" Association="Self.FK_usuariobitacora_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="usuariobitacora" EntitySet="usuariobitacora" />
+    </AssociationSet>
+    <AssociationSet Name="FK_vehiculo_visitante" Association="Self.FK_vehiculo_visitante">
+      <End Role="visitante" EntitySet="visitante" />
+      <End Role="vehiculo" EntitySet="vehiculo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_visita_visitante" Association="Self.FK_visita_visitante">
+      <End Role="visitante" EntitySet="visitante" />
+      <End Role="visita" EntitySet="visita" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

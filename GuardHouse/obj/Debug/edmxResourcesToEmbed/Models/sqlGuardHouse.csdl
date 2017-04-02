@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="guardhouseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="visita">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fecEntrada" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="horaEntrada" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="fecSalida" Type="DateTime" Precision="0" />
+    <Property Name="horaSalida" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="idvisitante" Type="Int32" Nullable="false" />
+    <Property Name="idpropiedad" Type="Int32" Nullable="false" />
+    <Property Name="estatuspropiedad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="detalle1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="detalle2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_visita_visitante" FromRole="visita" ToRole="visitante" />
+  </EntityType>
+  <EntityType Name="visitante">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="numeroid" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="tipoid" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="foto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="vehiculo" Relationship="guardhouseModel.FK_vehiculo_visitante" FromRole="visitante" ToRole="vehiculo" />
+    <NavigationProperty Name="visita" Relationship="guardhouseModel.FK_visita_visitante" FromRole="visitante" ToRole="visita" />
+  </EntityType>
+  <EntityType Name="vehiculo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="placa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="marca" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="submarca" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="idvisitante" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_vehiculo_visitante" FromRole="vehiculo" ToRole="visitante" />
+  </EntityType>
+  <EntityContainer Name="guardhouseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="visita" EntityType="Self.visita" />
+    <EntitySet Name="visitante" EntityType="Self.visitante" />
+    <EntitySet Name="vehiculo" EntityType="Self.vehiculo" />
+    <EntitySet Name="guardhouse" EntityType="guardhouseModel.guardhouse" />
+    <EntitySet Name="guardia" EntityType="guardhouseModel.guardia" />
+    <EntitySet Name="modulo" EntityType="guardhouseModel.modulo" />
+    <EntitySet Name="perfil" EntityType="guardhouseModel.perfil" />
+    <EntitySet Name="puerta" EntityType="guardhouseModel.puerta" />
+    <EntitySet Name="turno" EntityType="guardhouseModel.turno" />
+    <EntitySet Name="usuario" EntityType="guardhouseModel.usuario" />
+    <EntitySet Name="sysdiagrams" EntityType="guardhouseModel.sysdiagrams" />
+    <AssociationSet Name="FK_guardia_usuario" Association="guardhouseModel.FK_guardia_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="guardia" EntitySet="guardia" />
+    </AssociationSet>
+    <AssociationSet Name="FK_turno_puerta" Association="guardhouseModel.FK_turno_puerta">
+      <End Role="puerta" EntitySet="puerta" />
+      <End Role="turno" EntitySet="turno" />
+    </AssociationSet>
+    <AssociationSet Name="FK_turno_usuario" Association="guardhouseModel.FK_turno_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="turno" EntitySet="turno" />
+    </AssociationSet>
+    <AssociationSet Name="FK_vehiculo_visitante" Association="guardhouseModel.FK_vehiculo_visitante">
+      <End Role="visitante" EntitySet="visitante" />
+      <End Role="vehiculo" EntitySet="vehiculo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_visita_visitante" Association="guardhouseModel.FK_visita_visitante">
+      <End Role="visitante" EntitySet="visitante" />
+      <End Role="visita" EntitySet="visita" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(guardhouseModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(guardhouseModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="usuariobitacora" EntityType="guardhouseModel.usuariobitacora" />
+    <AssociationSet Name="FK_usuariobitacora_usuario" Association="guardhouseModel.FK_usuariobitacora_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="usuariobitacora" EntitySet="usuariobitacora" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="guardhouse">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="condominio" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="direccion" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="telefono" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="responsable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="emailresponsable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="telefonoresponsable" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="clave" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="condominiositio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="guardia">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idusuario" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="edad" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="sexo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="edocivil" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="puesto" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="empresa" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="usuario" Relationship="guardhouseModel.FK_guardia_usuario" FromRole="guardia" ToRole="usuario" />
+    <Property Name="fecharegistro" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="modulo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="texto" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="intro" Type="String" MaxLength="130" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="icono" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="premodulo" Type="Int32" />
+    <Property Name="perfiles" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="agrupador" Type="Int32" />
+    <Property Name="estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="perfil">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="valor" Type="Int32" Nullable="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="defaultmodulo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="puerta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="direccion" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="no" Type="Int32" Nullable="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="geolocalizacion" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="turno" Relationship="guardhouseModel.FK_turno_puerta" FromRole="puerta" ToRole="turno" />
+  </EntityType>
+  <EntityType Name="turno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idUsuario" Type="Int32" Nullable="false" />
+    <Property Name="idPuerta" Type="Int32" Nullable="false" />
+    <Property Name="noTurno" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="horaInicio" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="horaFin" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="horas" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="puerta" Relationship="guardhouseModel.FK_turno_puerta" FromRole="turno" ToRole="puerta" />
+    <NavigationProperty Name="usuario" Relationship="guardhouseModel.FK_turno_usuario" FromRole="turno" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="perfil" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="guardia" Relationship="guardhouseModel.FK_guardia_usuario" FromRole="usuario" ToRole="guardia" />
+    <NavigationProperty Name="turno" Relationship="guardhouseModel.FK_turno_usuario" FromRole="usuario" ToRole="turno" />
+    <NavigationProperty Name="usuariobitacora" Relationship="guardhouseModel.FK_usuariobitacora_usuario" FromRole="usuario" ToRole="usuariobitacora" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_guardia_usuario">
+    <End Type="guardhouseModel.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="guardhouseModel.guardia" Role="guardia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="guardia">
+        <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_turno_puerta">
+    <End Type="guardhouseModel.puerta" Role="puerta" Multiplicity="1" />
+    <End Type="guardhouseModel.turno" Role="turno" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="puerta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="turno">
+        <PropertyRef Name="idPuerta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_turno_usuario">
+    <End Type="guardhouseModel.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="guardhouseModel.turno" Role="turno" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="turno">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_vehiculo_visitante">
+    <End Type="guardhouseModel.visitante" Role="visitante" Multiplicity="1" />
+    <End Type="guardhouseModel.vehiculo" Role="vehiculo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="visitante">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vehiculo">
+        <PropertyRef Name="idvisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_visita_visitante">
+    <End Type="guardhouseModel.visitante" Role="visitante" Multiplicity="1" />
+    <End Type="guardhouseModel.visita" Role="visita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="visitante">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visita">
+        <PropertyRef Name="idvisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="usuariobitacora">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idusuario" Type="Int32" Nullable="false" />
+    <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="accion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="hora" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="infoguardia" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="usuario" Relationship="guardhouseModel.FK_usuariobitacora_usuario" FromRole="usuariobitacora" ToRole="usuario" />
+    <Property Name="detalle" Type="String" Nullable="false" MaxLength="600" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_usuariobitacora_usuario">
+    <End Type="guardhouseModel.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="guardhouseModel.usuariobitacora" Role="usuariobitacora" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="usuariobitacora">
+        <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
