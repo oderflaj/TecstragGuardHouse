@@ -15,10 +15,34 @@ namespace GuardHouse.Controllers
         
         public ActionResult Visitas()
         {
-            return View();
+            guardhouseEntities gh = new guardhouseEntities();
+            Exception ex = new Exception();
+            try
+            {
+                string fecActual = DateTime.Now.ToShortDateString();
+                DateTime d = DateTime.Parse(fecActual);
+                var visitax = gh.visita.Where(v => v.fecEntrada == d).OrderByDescending(o=>o.horaEntrada).ToList();
+                ViewBag.visitas = visitax;
+                ViewBag.registros = visitax.Count;
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = true;
+                ViewBag.ErrorMensaje = e.Message;
+                return View("Visitas");
+            }
+            //finally
+            //{
+            //    if (gh != null)
+            //    {
+            //        gh.Dispose();
+            //    }
+            //}
+                return View();
         }
 
-        public ActionResult Registro(string numeroid, string placa, string nombrevisitante, string tipoid, string marca, string submarca, string color)
+        public ActionResult Registro(string numeroid, string placa, string nombrevisitante, string tipoid, string marca, string submarca, string color, string casa, int idcasa, string direccion, string estado, string convenio, string mensaje)
         {
             guardhouseEntities gh = new guardhouseEntities();
             Exception ex = new Exception();
@@ -49,10 +73,92 @@ namespace GuardHouse.Controllers
                     throw ex;
                 }
 
+                visitante invitado = new visitante();
 
+                invitado = gh.visitante.Where(v => v.numeroid.Equals(numeroid.ToUpper()) && v.estatus.Equals(Label.activo)).FirstOrDefault();
+
+                if (invitado == null)
+                {
+                    invitado = new visitante
+                    {
+                        numeroid = numeroid.ToUpper(),
+                        tipoid = tipoid.ToUpper(),
+                        nombre = nombrevisitante.ToUpper().Trim(),
+                        estatus = Label.activo
+                    };
+                    gh.visitante.Add(invitado);
+                    gh.SaveChanges();
+                }
+
+                string formaIng = "CAMINANDO";
+
+                vehiculo coche = new vehiculo();
+
+                if (!placa.Trim().ToUpper().Equals("CAMINANDO"))
+                {
+                    coche = gh.vehiculo.Where(c => c.placa.Equals(placa.ToUpper())).FirstOrDefault();
+                    if(coche==null)
+                    { 
+                        coche = new vehiculo
+                        {
+                            placa = placa.ToUpper(),
+                            marca = marca.ToUpper(),
+                            submarca = submarca.ToUpper(),
+                            color = color.ToUpper(),
+                            idvisitante = invitado.id
+                        };
+                        gh.vehiculo.Add(coche);
+                        gh.SaveChanges();
+                    }
+                    formaIng = string.Format("en automovil {0} {1} placa {2} color {3}", coche.marca, coche.submarca, coche.placa, coche.color);
+                }
+
+                puerta puerta = new puerta();
+                turno turno = new turno();
+                List<guardia> guardia = new List<guardia>();
+
+                puerta = (Session["puerta"]!=null?(puerta)Session["puerta"] : null);
+                turno = (Session["turno"]!=null?(turno)Session["turno"] : null);
+                guardia = (Session["guardia"]!=null?(List<guardia>)Session["guardia"] : null);
+
+
+                string detalle1 = string.Format("Visitante {0} con número de identificación {1} tipo {2} ingresa {3} por la puerta {4} dirección {5}. La entrada fue dada por el turno {6}.", invitado.nombre, invitado.numeroid, invitado.tipoid, formaIng, (puerta != null? puerta.no.ToString() :""), (puerta != null ? puerta.direccion : ""), (turno !=null ? turno.noTurno.ToString() : "")  );
+                string detalle2 = "Información de guardias que permitieron el acceso: ";
+
+                foreach (var g in guardia)
+                {
+                    detalle2 += string.Format("Nombre: {0}, Empresa:{1}, Puesto: {2} |", g.nombre, g.empresa, g.puesto);
+                }
+
+
+                visita visitax = new visita
+                {
+                    fecEntrada = DateTime.Now,
+                    horaEntrada = DateTime.Now.ToString("HH:mm"),
+                    idvisitante = invitado.id,
+                    idpropiedad = idcasa,
+                    estatuspropiedad = estado,
+                    detalle1 = detalle1,
+                    detalle2 = detalle2,
+                    nopropiedad = casa,
+                    domicilio = direccion + " #"+casa
+
+                };
+
+                if (!formaIng.Equals("CAMINANDO"))
+                {
+                    visitax.idvehiculo = coche.id;
+                }
+
+                gh.visita.Add(visitax);
+                gh.SaveChanges();
 
             }
-            catch(Exception e) {
+            catch(Exception e)
+            {
+                ViewBag.Error = true;
+                ViewBag.ErrorMensaje = "Error al guardar el registro de la visita. " + e.Message;
+                return RedirectToAction("Visitas", "Visitas");
             }
             finally {
                 if (gh != null)
@@ -61,7 +167,8 @@ namespace GuardHouse.Controllers
                 }
             }
 
-            return View("Visitas");
+            //return View("Visitas", "Visitas");
+            return RedirectToAction("Visitas", "Visitas");
         }
     }
 }

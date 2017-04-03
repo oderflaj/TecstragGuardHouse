@@ -4,6 +4,9 @@
     <EntitySetMapping Name="visita">
       <EntityTypeMapping TypeName="guardhouseModel.visita">
         <MappingFragment StoreEntitySet="visita">
+          <ScalarProperty Name="domicilio" ColumnName="domicilio" />
+          <ScalarProperty Name="idvehiculo" ColumnName="idvehiculo" />
+          <ScalarProperty Name="nopropiedad" ColumnName="nopropiedad" />
           <ScalarProperty Name="detalle2" ColumnName="detalle2" />
           <ScalarProperty Name="detalle1" ColumnName="detalle1" />
           <ScalarProperty Name="id" ColumnName="id" />

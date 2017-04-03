@@ -181,6 +181,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\WebApiControllers\CommunityController.cs" />
+    <Compile Include="Controllers\WebApiControllers\VisitasApiController.cs" />
     <Compile Include="Seguridad\Autenticacion.cs" />
     <Compile Include="Controllers\AdmiDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1191,10 +1192,12 @@
     <Content Include="Views\AdmiDashboard\AdmiDashboard.cshtml" />
     <Content Include="Views\Shared\_Mensaje.cshtml" />
     <Content Include="Views\Shared\_ContentHeader.cshtml" />
+    <Content Include="Views\Visitas\_RegistroVisita.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Bitacoras\" />
+    <Folder Include="Views\Guardhouse\" />
     <Folder Include="Views\Modulos\" />
   </ItemGroup>
   <ItemGroup>

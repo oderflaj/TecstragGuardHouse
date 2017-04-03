@@ -24,7 +24,11 @@ namespace GuardHouse.Models
         public string estatuspropiedad { get; set; }
         public string detalle1 { get; set; }
         public string detalle2 { get; set; }
+        public string nopropiedad { get; set; }
+        public Nullable<int> idvehiculo { get; set; }
+        public string domicilio { get; set; }
     
         public virtual visitante visitante { get; set; }
+        public virtual vehiculo vehiculo { get; set; }
     }
 }

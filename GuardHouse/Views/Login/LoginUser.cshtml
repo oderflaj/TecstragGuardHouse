@@ -83,8 +83,9 @@
                         $("#tk").val(data.access_token);
                         $("form").unbind('submit').submit();
                     }).fail(function () {
-                        alert("Fallo login TK");
-                        return false;
+                        //alert("Fallo login TK");
+                        //return false;
+                        $("form").unbind('submit').submit();
                     });
 
                     

@@ -143,6 +143,9 @@
           <Property Name="detalle1" Type="varchar" MaxLength="500" />
           <Property Name="detalle2" Type="varchar" MaxLength="500" />
           <Property Name="estatuspropiedad" Type="varchar" MaxLength="10" />
+          <Property Name="nopropiedad" Type="varchar" MaxLength="10" />
+          <Property Name="idvehiculo" Type="int" />
+          <Property Name="domicilio" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="visitante">
           <Key>
@@ -212,6 +215,18 @@
             </Principal>
             <Dependent Role="vehiculo">
               <PropertyRef Name="idvisitante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visita_vehiculo">
+          <End Role="vehiculo" Type="Self.vehiculo" Multiplicity="0..1" />
+          <End Role="visita" Type="Self.visita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="visita">
+              <PropertyRef Name="idvehiculo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -291,6 +306,10 @@
             <End Role="visitante" EntitySet="visitante" />
             <End Role="vehiculo" EntitySet="vehiculo" />
           </AssociationSet>
+          <AssociationSet Name="FK_visita_vehiculo" Association="Self.FK_visita_vehiculo">
+            <End Role="vehiculo" EntitySet="vehiculo" />
+            <End Role="visita" EntitySet="visita" />
+          </AssociationSet>
           <AssociationSet Name="FK_visita_visitante" Association="Self.FK_visita_visitante">
             <End Role="visitante" EntitySet="visitante" />
             <End Role="visita" EntitySet="visita" />
@@ -315,6 +334,10 @@
           <Property Name="detalle1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="detalle2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_visita_visitante" FromRole="visita" ToRole="visitante" />
+          <Property Name="nopropiedad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="idvehiculo" Type="Int32" />
+          <NavigationProperty Name="vehiculo" Relationship="guardhouseModel.FK_visita_vehiculo" FromRole="visita" ToRole="vehiculo" />
+          <Property Name="domicilio" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="visitante">
           <Key>
@@ -340,6 +363,7 @@
           <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idvisitante" Type="Int32" Nullable="false" />
           <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_vehiculo_visitante" FromRole="vehiculo" ToRole="visitante" />
+          <NavigationProperty Name="visita" Relationship="guardhouseModel.FK_visita_vehiculo" FromRole="vehiculo" ToRole="visita" />
         </EntityType>
         <EntityContainer Name="guardhouseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="visita" EntityType="Self.visita" />
@@ -407,6 +431,10 @@
           <AssociationSet Name="FK_usuariobitacora_usuario" Association="guardhouseModel.FK_usuariobitacora_usuario">
             <End Role="usuario" EntitySet="usuario" />
             <End Role="usuariobitacora" EntitySet="usuariobitacora" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visita_vehiculo" Association="guardhouseModel.FK_visita_vehiculo">
+            <End Role="vehiculo" EntitySet="vehiculo" />
+            <End Role="visita" EntitySet="visita" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="guardhouse">
@@ -613,6 +641,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_visita_vehiculo">
+          <End Type="guardhouseModel.vehiculo" Role="vehiculo" Multiplicity="0..1" />
+          <End Type="guardhouseModel.visita" Role="visita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="visita">
+              <PropertyRef Name="idvehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -622,6 +662,9 @@
           <EntitySetMapping Name="visita">
             <EntityTypeMapping TypeName="guardhouseModel.visita">
               <MappingFragment StoreEntitySet="visita">
+                <ScalarProperty Name="domicilio" ColumnName="domicilio" />
+                <ScalarProperty Name="idvehiculo" ColumnName="idvehiculo" />
+                <ScalarProperty Name="nopropiedad" ColumnName="nopropiedad" />
                 <ScalarProperty Name="detalle2" ColumnName="detalle2" />
                 <ScalarProperty Name="detalle1" ColumnName="detalle1" />
                 <ScalarProperty Name="id" ColumnName="id" />

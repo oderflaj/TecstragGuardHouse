@@ -15,6 +15,10 @@
     <Property Name="detalle1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="detalle2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_visita_visitante" FromRole="visita" ToRole="visitante" />
+    <Property Name="nopropiedad" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="idvehiculo" Type="Int32" />
+    <NavigationProperty Name="vehiculo" Relationship="guardhouseModel.FK_visita_vehiculo" FromRole="visita" ToRole="vehiculo" />
+    <Property Name="domicilio" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="visitante">
     <Key>
@@ -40,6 +44,7 @@
     <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idvisitante" Type="Int32" Nullable="false" />
     <NavigationProperty Name="visitante" Relationship="guardhouseModel.FK_vehiculo_visitante" FromRole="vehiculo" ToRole="visitante" />
+    <NavigationProperty Name="visita" Relationship="guardhouseModel.FK_visita_vehiculo" FromRole="vehiculo" ToRole="visita" />
   </EntityType>
   <EntityContainer Name="guardhouseEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="visita" EntityType="Self.visita" />
@@ -107,6 +112,10 @@
     <AssociationSet Name="FK_usuariobitacora_usuario" Association="guardhouseModel.FK_usuariobitacora_usuario">
       <End Role="usuario" EntitySet="usuario" />
       <End Role="usuariobitacora" EntitySet="usuariobitacora" />
+    </AssociationSet>
+    <AssociationSet Name="FK_visita_vehiculo" Association="guardhouseModel.FK_visita_vehiculo">
+      <End Role="vehiculo" EntitySet="vehiculo" />
+      <End Role="visita" EntitySet="visita" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="guardhouse">
@@ -310,6 +319,18 @@
       </Principal>
       <Dependent Role="usuariobitacora">
         <PropertyRef Name="idusuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_visita_vehiculo">
+    <End Type="guardhouseModel.vehiculo" Role="vehiculo" Multiplicity="0..1" />
+    <End Type="guardhouseModel.visita" Role="visita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vehiculo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visita">
+        <PropertyRef Name="idvehiculo" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

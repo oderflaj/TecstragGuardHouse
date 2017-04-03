@@ -138,6 +138,9 @@
     <Property Name="detalle1" Type="varchar" MaxLength="500" />
     <Property Name="detalle2" Type="varchar" MaxLength="500" />
     <Property Name="estatuspropiedad" Type="varchar" MaxLength="10" />
+    <Property Name="nopropiedad" Type="varchar" MaxLength="10" />
+    <Property Name="idvehiculo" Type="int" />
+    <Property Name="domicilio" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="visitante">
     <Key>
@@ -207,6 +210,18 @@
       </Principal>
       <Dependent Role="vehiculo">
         <PropertyRef Name="idvisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_visita_vehiculo">
+    <End Role="vehiculo" Type="Self.vehiculo" Multiplicity="0..1" />
+    <End Role="visita" Type="Self.visita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vehiculo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visita">
+        <PropertyRef Name="idvehiculo" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -285,6 +300,10 @@
     <AssociationSet Name="FK_vehiculo_visitante" Association="Self.FK_vehiculo_visitante">
       <End Role="visitante" EntitySet="visitante" />
       <End Role="vehiculo" EntitySet="vehiculo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_visita_vehiculo" Association="Self.FK_visita_vehiculo">
+      <End Role="vehiculo" EntitySet="vehiculo" />
+      <End Role="visita" EntitySet="visita" />
     </AssociationSet>
     <AssociationSet Name="FK_visita_visitante" Association="Self.FK_visita_visitante">
       <End Role="visitante" EntitySet="visitante" />

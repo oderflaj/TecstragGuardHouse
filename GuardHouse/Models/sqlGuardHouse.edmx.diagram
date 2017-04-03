@@ -23,6 +23,7 @@
         <AssociationConnector Association="guardhouseModel.FK_visita_visitante" />
         <EntityTypeShape EntityType="guardhouseModel.usuariobitacora" Width="1.5" PointX="10" PointY="7.625" />
         <AssociationConnector Association="guardhouseModel.FK_usuariobitacora_usuario" />
+        <AssociationConnector Association="guardhouseModel.FK_visita_vehiculo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -7,6 +7,9 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Web.Http;
+using GuardHouse.Models;
+using GuardHouse.Controllers;
+using GuardHouse.Controllers.Shared;
 
 namespace GuardHouse.Controllers.WebApiControllers
 {
@@ -37,7 +40,7 @@ namespace GuardHouse.Controllers.WebApiControllers
             //           .Where(c => c.Type == ClaimTypes.Role)
             //           .Select(c => c.Value)
             //           .ToList();
-            string url = "http://"+System.Configuration.ConfigurationManager.AppSettings.Get("condominiositio").ToString();
+            string url = "http://" + System.Configuration.ConfigurationManager.AppSettings.Get("condominiositio").ToString();
             url += "/api/data/PropiedadEstatusBackend/" + numero.ToString();
             string respuesta = "";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -47,7 +50,7 @@ namespace GuardHouse.Controllers.WebApiControllers
                 using (Stream responseStream = response.GetResponseStream())
                 {
                     StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
-                    
+
                     respuesta = reader.ReadToEnd();
                 }
             }
@@ -60,11 +63,13 @@ namespace GuardHouse.Controllers.WebApiControllers
                     String errorText = reader.ReadToEnd();
                     // log errorText
                 }
-                throw ex;
+                return Content(HttpStatusCode.BadRequest, ex.Message);
             }
-            
+
             //return Content(HttpStatusCode.BadRequest, "Error oook");
             return Ok(respuesta);
         }
+
+        
     }
 }

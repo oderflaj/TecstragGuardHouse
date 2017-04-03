@@ -14,6 +14,12 @@ namespace GuardHouse.Models
     
     public partial class vehiculo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public vehiculo()
+        {
+            this.visita = new HashSet<visita>();
+        }
+    
         public int id { get; set; }
         public string placa { get; set; }
         public string marca { get; set; }
@@ -22,5 +28,7 @@ namespace GuardHouse.Models
         public int idvisitante { get; set; }
     
         public virtual visitante visitante { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<visita> visita { get; set; }
     }
 }
