@@ -92,8 +92,8 @@
                                     <label for="nombre">Tipo Id</label>
                                     <select class="form-control" id="tipoid" name="tipoid">
                                         <option value="INE">INE</option>
-                                        <option value="Licencia">Licencia</option>
-                                        <option value="Otra">Otra</option>
+                                        <option value="LICENCIA">LICENCIA</option>
+                                        <option value="OTRA">OTRA</option>
                                     </select>
                                 </div>
                             </div>
@@ -128,7 +128,9 @@
                                     <th>Tipo Id</th>
                                     <th>Placa</th>
                                     <th>Nombre</th>
-                                    <th>Automovil</th>
+                                    <th>Marca</th>
+                                    <th>Submarca</th>
+                                    <th>Color</th>
                                 </tr>
                             </thead>
                         </table>
@@ -157,11 +159,22 @@
     </div><!-- /.modal-dialog -->
 
 </div><!-- /.modal -->
-
+<link rel="stylesheet" href="../../Content/plugins/tstgStyles.css">
+<script src="../../Content/plugins/tstgFunctions.js"></script>
 <script>
-    function myTrim(x) {
-        return x.replace(/^\s+|\s+$/gm, '');
+    function setGuestInfo(rec)
+    {
+        $("#placa").val(myTrim(rec[2].innerText).length == 0 ? "CAMINANDO" : rec[2].innerText);
+        $("#numeroid").val(rec[0].innerText);
+        
+        $("#tipoid").val(rec[1].innerText);
+        $("#nombrevisitante").val(rec[3].innerText);
+        $("#marca").val(rec[4].innerText);
+        $("#submarca").val(rec[5].innerText);
+        $("#color").val(rec[6].innerText);
+
     }
+
     let tablav;
     $(document).ready(function () {
 
@@ -258,10 +271,17 @@
             }
 
         });
+        $("#placa").change(function () {
+            if (myTrim($("#placa").val()).toLowerCase() == "caminando") {
+                $("#marca").val("");
+                $("#submarca").val("");
+                $("#color").val("")
+            }
+        });
+        
 
         $(".siguiente").click(function () {
-            var oxTable = tablav;
-            oxTable.fnClearTable();
+            tablav.fnClearTable(); //Limpia tabla de resultados probables
             $(".alertmodalcasa").hide();
             $("#overlaycasa").show();
             if (myTrim($("#nocasa").val()).length < 3) {
@@ -291,10 +311,17 @@
                     $("#domicilio").html(" - " + propiedad.calle + " #" + propiedad.numero);
                     $(".alertmodalestado").removeClass("alert-danger");
                     $(".alertmodalestado").removeClass("alert-info");
+                    $(".alertmodalestado").removeClass("alert-warning");
                     if (permitir === "no")
                     {
                         $(".alertmodalestado").css("display", "block");
                         $(".alertmodalestado").addClass("alert-danger");
+                        $("#messModalestado").html(mensaje);
+                    }
+                    else if (amonestacion.length > 0 && permitir==="si" )
+                    {
+                        $(".alertmodalestado").css("display", "block");
+                        $(".alertmodalestado").addClass("alert-warning");
                         $("#messModalestado").html(mensaje);
                     }
                     else
@@ -333,23 +360,24 @@
                 $("#panelVisitante").hide();
             });
 
-            $("#numeroid").keyup(function () {
-                if ($(this).val().length > 3)
-                {
+            $("#numeroid, #placa").keyup(function () {
+                if ($("#numeroid").val().length > 3 || $("#placa").val().length > 3) {
                     $.ajax({
                         type: 'GET',
-                        url: '/api/data/HistoricoVisitante/' + $(this).val() + "/" + (myTrim($("#placa").val()).length == 0 ? "0" : myTrim($("#placa").val())),
+                        url: '/api/data/HistoricoVisitante/' + (myTrim($("#numeroid").val()).length == 0 ? "0" : myTrim($("#numeroid").val())) + "/" + (myTrim($("#placa").val()).length == 0 ? "0" : myTrim($("#placa").val())),
                         headers: { "Authorization": "bearer @Session["tk"].ToString()" }
                     }).done(function (s) {
                         console.log(s);
                         var vix = s.visitantes;
                         var oxTable = tablav;
                         oxTable.fnClearTable();
-                        for (var i = 0; i < vix.length; i++)
-                        {
-                            var auto = (vix[i].marca + " " + vix[i].submarca + " " + vix[i].color);
-                            oxTable.fnAddData([vix[i].numeroid, vix[i].tipoid, vix[i].placa, vix[i].nombre, auto  ]);
+                        for (var i = 0; i < vix.length; i++) {
+                            //var auto = (vix[i].marca + " " + vix[i].submarca + " " + vix[i].color);
+                            //oxTable.fnAddData([vix[i].numeroid, vix[i].tipoid, vix[i].placa, vix[i].nombre, auto]);
+
+                            oxTable.fnAddData([vix[i].numeroid, vix[i].tipoid, vix[i].placa, vix[i].nombre, vix[i].marca, vix[i].submarca, vix[i].color]);
                         }
+                        SetSelectDTActive("visitanteTabla",setGuestInfo);
 
                     }).fail(function (e) {
                         $("#overlaycasa").hide();
@@ -357,6 +385,11 @@
                         $("#messModalcasa").html("Falla al obtener información de la propiedad!");
                         console.log(e.responseText);
                     });
+                }
+                else
+                {
+                    tablav.fnClearTable(); //Limpia tabla de resultados probables
+                    //document.getElementById("regExpress").reset();
                 }
 
             });

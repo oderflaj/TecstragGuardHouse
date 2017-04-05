@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using GuardHouse.Models;
 using GuardHouse.Controllers;
 using GuardHouse.Controllers.Shared;
+using System.Text.RegularExpressions;
 
 namespace GuardHouse.Controllers
 {
@@ -98,10 +99,12 @@ namespace GuardHouse.Controllers
                 {
                     coche = gh.vehiculo.Where(c => c.placa.Equals(placa.ToUpper())).FirstOrDefault();
                     if(coche==null)
-                    { 
+                    {
+                        Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+                        
                         coche = new vehiculo
                         {
-                            placa = placa.ToUpper(),
+                            placa = rgx.Replace(placa,"").ToUpper(),
                             marca = marca.ToUpper(),
                             submarca = submarca.ToUpper(),
                             color = color.ToUpper(),

@@ -40,7 +40,13 @@ namespace GuardHouse.Controllers.WebApiControllers
             //           .Where(c => c.Type == ClaimTypes.Role)
             //           .Select(c => c.Value)
             //           .ToList();
-            string url = "http://" + System.Configuration.ConfigurationManager.AppSettings.Get("condominiositio").ToString();
+            string site = "";
+            using (GuardHouse.Models.guardhouseEntities g = new guardhouseEntities())
+            {
+                site = g.guardhouse.Select(s => s.condominiositio).FirstOrDefault();
+            }
+
+            string url = string.Format("http{0}://{1}", (System.Configuration.ConfigurationManager.AppSettings.Get("SSH").ToString().Equals("si") ? "s" : ""), site);
             url += "/api/data/PropiedadEstatusBackend/" + numero.ToString();
             string respuesta = "";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
