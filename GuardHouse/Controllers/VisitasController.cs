@@ -26,6 +26,12 @@ namespace GuardHouse.Controllers
                 ViewBag.visitas = visitax;
                 ViewBag.registros = visitax.Count;
 
+                if (Session["ErrorRegistro"] != null && (bool)Session["ErrorRegistro"] == true)
+                {
+                    ViewBag.Error = true;
+                    ViewBag.ErrorMensaje = Session["ErrorRegistroMensaje"];
+                }
+
             }
             catch (Exception e)
             {
@@ -47,6 +53,9 @@ namespace GuardHouse.Controllers
         {
             guardhouseEntities gh = new guardhouseEntities();
             Exception ex = new Exception();
+            Session["ErrorRegistro"] = null;
+            Session["ErrorRegistroMensaje"] = null;
+
             try {
                 if(numeroid.Trim().Length<4)
                 {
@@ -90,21 +99,33 @@ namespace GuardHouse.Controllers
                     gh.visitante.Add(invitado);
                     gh.SaveChanges();
                 }
+                else if(invitado.tipoid.Equals(tipoid.ToUpper()) && !invitado.nombre.Equals(nombrevisitante.ToUpper().Trim()))
+                {
+                    ex = new Exception("Esta registrando un VISITANTE previamente registrado con el mismo número y tipo de IDENTIFICACION y diferente NOMBRE. Si el nombre del visitante es muy distinto al registrado apunte los datos de la IDENTIFICACION a mano y reporte al administrador y seleccione el valor existente para dejarlo pasar; si el nombre no cambia mucho solo seleccione el valor existente.");
+                    Session["idVisitanteAlerta"] = numeroid.ToUpper();
+                    Session["alertag"] = string.Format("Visitante SOSPECHOSO: ID->{0} Tipo->{1} Nombre->{2}.", numeroid.ToUpper(), tipoid.ToUpper(), nombrevisitante.ToUpper().Trim());
+                    throw ex;
+                }
 
                 string formaIng = "CAMINANDO";
 
                 vehiculo coche = new vehiculo();
+                //Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+                Regex rgx = new Regex("[^a-zA-Z0-9]");
+                placa = rgx.Replace(placa, "").ToUpper();
 
-                if (!placa.Trim().ToUpper().Equals("CAMINANDO"))
+                if (!placa.Equals("CAMINANDO"))
                 {
-                    coche = gh.vehiculo.Where(c => c.placa.Equals(placa.ToUpper())).FirstOrDefault();
-                    if(coche==null)
+                    
+                    coche = gh.vehiculo.Where(c => c.placa.Equals(placa)).FirstOrDefault();
+
+                    if (coche == null)
                     {
-                        Regex rgx = new Regex("[^a-zA-Z0-9 -]");
-                        
+
+
                         coche = new vehiculo
                         {
-                            placa = rgx.Replace(placa,"").ToUpper(),
+                            placa = placa,
                             marca = marca.ToUpper(),
                             submarca = submarca.ToUpper(),
                             color = color.ToUpper(),
@@ -112,6 +133,27 @@ namespace GuardHouse.Controllers
                         };
                         gh.vehiculo.Add(coche);
                         gh.SaveChanges();
+                    }
+                    else if (!coche.color.Equals(color.ToUpper().Trim()) || !coche.marca.Equals(marca.ToUpper().Trim()) || !coche.submarca.Equals(submarca.ToUpper().Trim()))
+                    {
+                        ex = new Exception("Esta registrando un Vehiculo previamente registrado con el mismo número de placa. Si el auto varia en SUBMODELO ó COLOR apunte los datos a mano y reporte al administrador y seleccione el valor existente; de lo contrario solo seleccione el valor existente.");
+                        Session["placa"] = placa;
+                        Session["alertav"] = string.Format("Automovil SOSPECHOSO: Placa->{0} Marca->{1} Submarca->{2} Color->{3}.",placa, marca.ToUpper(), submarca.ToUpper(), color.ToUpper());
+                        throw ex;
+                    }
+                    else if (coche.idvisitante != invitado.id)
+                    {
+                        vehiculo newCoche = new vehiculo
+                        {
+                            placa = placa,
+                            marca = marca.ToUpper(),
+                            submarca = submarca.ToUpper(),
+                            color = color.ToUpper(),
+                            idvisitante = invitado.id
+                        };
+                        gh.vehiculo.Add(newCoche);
+                        gh.SaveChanges();
+                        coche = newCoche;
                     }
                     formaIng = string.Format("en automovil {0} {1} placa {2} color {3}", coche.marca, coche.submarca, coche.placa, coche.color);
                 }
@@ -133,6 +175,22 @@ namespace GuardHouse.Controllers
                     detalle2 += string.Format("Nombre: {0}, Empresa:{1}, Puesto: {2} |", g.nombre, g.empresa, g.puesto);
                 }
 
+                //Se agrega información del visitante como sospechosa
+                if (Session["idVisitanteAlerta"]!=null && Session["idVisitanteAlerta"].ToString().Equals(numeroid.ToUpper()))
+                {
+                    detalle2 += " | Alerta " + Session["alertag"].ToString();
+                    Session["idVisitanteAlerta"] = "";
+                    Session["alertag"] = "";
+                }
+                
+
+                //Se agrega información del vehiculo como sospechosa
+                if (Session["placa"]!=null && Session["placa"].ToString().Equals(placa))
+                {
+                    detalle2 += " | Alerta " + Session["alertav"].ToString();
+                    Session["placa"] = "";
+                    Session["alertav"] = "";
+                }
 
                 visita visitax = new visita
                 {
@@ -159,8 +217,8 @@ namespace GuardHouse.Controllers
             }
             catch(Exception e)
             {
-                ViewBag.Error = true;
-                ViewBag.ErrorMensaje = "Error al guardar el registro de la visita. " + e.Message;
+                Session["ErrorRegistro"] = true;
+                Session["ErrorRegistroMensaje"] = "Error al guardar el registro de la visita. " + e.Message;
                 return RedirectToAction("Visitas", "Visitas");
             }
             finally {

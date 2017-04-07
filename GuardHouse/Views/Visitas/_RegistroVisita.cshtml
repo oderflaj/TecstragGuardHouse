@@ -278,7 +278,13 @@
                 $("#color").val("")
             }
         });
-        
+
+        $("#nocasa").keypress(function (e) {
+            if (e.which == 13) {
+                $(".siguiente").trigger("click");
+            }
+        });
+
 
         $(".siguiente").click(function () {
             tablav.fnClearTable(); //Limpia tabla de resultados probables

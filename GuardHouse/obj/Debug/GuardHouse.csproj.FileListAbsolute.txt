@@ -86,3 +86,4 @@ F:\Vecino\Tecstrag\Desarrollo\GuardHouse\GuardHouse\bin\Microsoft.Owin.Cors.xml
 F:\Vecino\Tecstrag\Desarrollo\GuardHouse\GuardHouse\bin\Microsoft.Owin.Host.SystemWeb.xml
 F:\Vecino\Tecstrag\Desarrollo\GuardHouse\GuardHouse\bin\Microsoft.Owin.Security.xml
 F:\Vecino\Tecstrag\Desarrollo\GuardHouse\GuardHouse\bin\Microsoft.Owin.Security.OAuth.xml
+F:\Vecino\Tecstrag\Desarrollo\GuardHouse\GuardHouse\obj\Debug\GuardHouse.csprojResolveAssemblyReference.cache

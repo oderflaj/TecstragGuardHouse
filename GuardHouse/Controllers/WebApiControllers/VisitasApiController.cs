@@ -72,12 +72,13 @@ namespace GuardHouse.Controllers.WebApiControllers
                                   nombre = vx.nombre,
                                   id = vx.id
                               }
-                              ).ToList();
+                              ).OrderBy(v=>v.placa).ToList();
 
-                    foreach (var i in xx)
-                    {
-                        visitantes.Add(i);
-                    }
+                    //Se pasa abajo la integración
+                    //foreach (var i in xx)
+                    //{
+                    //    visitantes.Add(i);
+                    //}
 
                     var zz = (from vx in visi
                               where !excludeVeh.Contains(vx.id)
@@ -92,13 +93,21 @@ namespace GuardHouse.Controllers.WebApiControllers
                                   nombre = vx.nombre,
                                   id = vx.id
                               }
-                              ).ToList();
+                              ).OrderBy(a=>a.numeroid).ToList();
 
                     foreach (var i in zz)
                     {
                         visitantes.Add(i);
                     }
+
+                    //Se pone en segundo orden las placas
+                    foreach (var i in xx)
+                    {
+                        visitantes.Add(i);
+                    }
                 }
+
+                
 
                 return Content(HttpStatusCode.OK, new { visitantes });
 

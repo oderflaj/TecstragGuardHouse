@@ -181,6 +181,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\WebApiControllers\CommunityController.cs" />
+    <Compile Include="Controllers\WebApiControllers\FunctionApi.cs" />
     <Compile Include="Controllers\WebApiControllers\VisitasApiController.cs" />
     <Compile Include="Seguridad\Autenticacion.cs" />
     <Compile Include="Controllers\AdmiDashboardController.cs" />

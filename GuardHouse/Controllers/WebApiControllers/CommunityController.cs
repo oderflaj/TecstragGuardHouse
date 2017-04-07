@@ -35,44 +35,49 @@ namespace GuardHouse.Controllers.WebApiControllers
         [Route("PropiedadEstatus/{numero}")]
         public IHttpActionResult GetPropiedadEstatus(string numero)
         {
-            //var identity = (ClaimsIdentity)User.Identity;
-            //var sesion = identity.Claims
-            //           .Where(c => c.Type == ClaimTypes.Role)
-            //           .Select(c => c.Value)
-            //           .ToList();
-            string site = "";
-            using (GuardHouse.Models.guardhouseEntities g = new guardhouseEntities())
-            {
-                site = g.guardhouse.Select(s => s.condominiositio).FirstOrDefault();
-            }
+            //string site = "";
+            //using (GuardHouse.Models.guardhouseEntities g = new guardhouseEntities())
+            //{
+            //    site = g.guardhouse.Select(s => s.condominiositio).FirstOrDefault();
+            //}
 
-            string url = string.Format("http{0}://{1}", (System.Configuration.ConfigurationManager.AppSettings.Get("SSH").ToString().Equals("si") ? "s" : ""), site);
-            url += "/api/data/PropiedadEstatusBackend/" + numero.ToString();
+            //string url = string.Format("http{0}://{1}", (System.Configuration.ConfigurationManager.AppSettings.Get("SSH").ToString().Equals("si") ? "s" : ""), site);
+            //url += "/api/data/PropiedadEstatusBackend/" + numero.ToString();
+            //string respuesta = "";
+            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            //try
+            //{
+            //    WebResponse response = request.GetResponse();
+            //    using (Stream responseStream = response.GetResponseStream())
+            //    {
+            //        StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
+
+            //        respuesta = reader.ReadToEnd();
+            //    }
+            //}
+            //catch (WebException ex)
+            //{
+            //    WebResponse errorResponse = ex.Response;
+            //    using (Stream responseStream = errorResponse.GetResponseStream())
+            //    {
+            //        StreamReader reader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
+            //        String errorText = reader.ReadToEnd();
+            //        // log errorText
+            //    }
+            //    return Content(HttpStatusCode.BadRequest, ex.Message);
+            //}
             string respuesta = "";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             try
             {
-                WebResponse response = request.GetResponse();
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
-
-                    respuesta = reader.ReadToEnd();
-                }
+                string restapi = "/api/data/PropiedadEstatusBackend/" + numero.ToString();
+                respuesta = FunctionApi.GetCommunityInfo(restapi);
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                WebResponse errorResponse = ex.Response;
-                using (Stream responseStream = errorResponse.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
-                    String errorText = reader.ReadToEnd();
-                    // log errorText
-                }
                 return Content(HttpStatusCode.BadRequest, ex.Message);
             }
 
-            //return Content(HttpStatusCode.BadRequest, "Error oook");
+            
             return Ok(respuesta);
         }
 
