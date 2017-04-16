@@ -19,7 +19,6 @@ namespace GuardHouse.Models
         public string horaEntrada { get; set; }
         public Nullable<System.DateTime> fecSalida { get; set; }
         public string horaSalida { get; set; }
-        public int idvisitante { get; set; }
         public int idpropiedad { get; set; }
         public string estatuspropiedad { get; set; }
         public string detalle1 { get; set; }
@@ -27,8 +26,14 @@ namespace GuardHouse.Models
         public string nopropiedad { get; set; }
         public Nullable<int> idvehiculo { get; set; }
         public string domicilio { get; set; }
-    
-        public virtual visitante visitante { get; set; }
-        public virtual vehiculo vehiculo { get; set; }
+        public string numeroid { get; set; }
+        public string tipoid { get; set; }
+        public string nombre { get; set; }
+        public string placa { get; set; }
+        public string marca { get; set; }
+        public string submarca { get; set; }
+        public string color { get; set; }
+        public string listanegradetalle { get; set; }
+        public int idpersona { get; set; }
     }
 }

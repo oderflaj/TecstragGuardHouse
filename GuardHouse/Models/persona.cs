@@ -12,13 +12,12 @@ namespace GuardHouse.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class visitante
+    public partial class persona
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public visitante()
+        public persona()
         {
-            this.vehiculo = new HashSet<vehiculo>();
-            this.visita = new HashSet<visita>();
+            this.personavehiculo = new HashSet<personavehiculo>();
         }
     
         public int id { get; set; }
@@ -27,10 +26,10 @@ namespace GuardHouse.Models
         public string nombre { get; set; }
         public string foto { get; set; }
         public string estatus { get; set; }
+        public Nullable<bool> listanegra { get; set; }
+        public string listanegradetalle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<vehiculo> vehiculo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<visita> visita { get; set; }
+        public virtual ICollection<personavehiculo> personavehiculo { get; set; }
     }
 }

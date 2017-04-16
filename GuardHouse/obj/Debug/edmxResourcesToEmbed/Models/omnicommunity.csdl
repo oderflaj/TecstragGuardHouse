@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="omnicommunityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityContainer Name="omnicommunityEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="persona" EntityType="omnicommunityModel.persona" />
+    <EntitySet Name="personavehiculo" EntityType="omnicommunityModel.personavehiculo" />
+    <EntitySet Name="vehiculo" EntityType="omnicommunityModel.vehiculo" />
+    <AssociationSet Name="FK_personavehiculo_persona" Association="omnicommunityModel.FK_personavehiculo_persona">
+      <End Role="persona" EntitySet="persona" />
+      <End Role="personavehiculo" EntitySet="personavehiculo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_personavehiculo_vehiculo" Association="omnicommunityModel.FK_personavehiculo_vehiculo">
+      <End Role="vehiculo" EntitySet="vehiculo" />
+      <End Role="personavehiculo" EntitySet="personavehiculo" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="persona">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="numeroid" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="tipoid" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="foto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="estatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="listanegra" Type="Boolean" />
+    <Property Name="listanegradetalle" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="personavehiculo" Relationship="omnicommunityModel.FK_personavehiculo_persona" FromRole="persona" ToRole="personavehiculo" />
+  </EntityType>
+  <EntityType Name="personavehiculo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="idpersona" Type="Int32" Nullable="false" />
+    <Property Name="idvehiculo" Type="Int32" Nullable="false" />
+    <Property Name="estatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="listanegra" Type="Boolean" />
+    <NavigationProperty Name="persona" Relationship="omnicommunityModel.FK_personavehiculo_persona" FromRole="personavehiculo" ToRole="persona" />
+    <NavigationProperty Name="vehiculo" Relationship="omnicommunityModel.FK_personavehiculo_vehiculo" FromRole="personavehiculo" ToRole="vehiculo" />
+  </EntityType>
+  <EntityType Name="vehiculo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="placa" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="marca" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="submarca" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="color" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="listanegra" Type="Boolean" />
+    <Property Name="listanegradetalle" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="personavehiculo" Relationship="omnicommunityModel.FK_personavehiculo_vehiculo" FromRole="vehiculo" ToRole="personavehiculo" />
+  </EntityType>
+  <Association Name="FK_personavehiculo_persona">
+    <End Type="omnicommunityModel.persona" Role="persona" Multiplicity="1" />
+    <End Type="omnicommunityModel.personavehiculo" Role="personavehiculo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="persona">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="personavehiculo">
+        <PropertyRef Name="idpersona" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_personavehiculo_vehiculo">
+    <End Type="omnicommunityModel.vehiculo" Role="vehiculo" Multiplicity="1" />
+    <End Type="omnicommunityModel.personavehiculo" Role="personavehiculo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vehiculo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="personavehiculo">
+        <PropertyRef Name="idvehiculo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

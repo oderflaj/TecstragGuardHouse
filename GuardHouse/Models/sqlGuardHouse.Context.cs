@@ -28,8 +28,6 @@ namespace GuardHouse.Models
         }
     
         public virtual DbSet<visita> visita { get; set; }
-        public virtual DbSet<visitante> visitante { get; set; }
-        public virtual DbSet<vehiculo> vehiculo { get; set; }
         public virtual DbSet<guardhouse> guardhouse { get; set; }
         public virtual DbSet<guardia> guardia { get; set; }
         public virtual DbSet<modulo> modulo { get; set; }

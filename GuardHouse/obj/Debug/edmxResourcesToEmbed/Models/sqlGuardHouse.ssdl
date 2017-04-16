@@ -113,45 +113,31 @@
     <Property Name="hora" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="infoguardia" Type="varchar" MaxLength="500" Nullable="false" />
   </EntityType>
-  <EntityType Name="vehiculo">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="placa" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="marca" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="submarca" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="color" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="idvisitante" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="visita">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="fecEntrada" Type="date" Nullable="false" />
+    <Property Name="fecEntrada" Type="datetime" Nullable="false" />
     <Property Name="horaEntrada" Type="varchar" MaxLength="8" Nullable="false" />
-    <Property Name="fecSalida" Type="date" />
+    <Property Name="fecSalida" Type="datetime" />
     <Property Name="horaSalida" Type="varchar" MaxLength="8" />
-    <Property Name="idvisitante" Type="int" Nullable="false" />
     <Property Name="idpropiedad" Type="int" Nullable="false" />
+    <Property Name="estatuspropiedad" Type="varchar" MaxLength="10" />
     <Property Name="detalle1" Type="varchar" MaxLength="500" />
     <Property Name="detalle2" Type="varchar" MaxLength="500" />
-    <Property Name="estatuspropiedad" Type="varchar" MaxLength="10" />
     <Property Name="nopropiedad" Type="varchar" MaxLength="10" />
     <Property Name="idvehiculo" Type="int" />
     <Property Name="domicilio" Type="varchar" MaxLength="200" />
-  </EntityType>
-  <EntityType Name="visitante">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="numeroid" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="tipoid" Type="varchar" MaxLength="15" Nullable="false" />
-    <Property Name="nombre" Type="varchar" MaxLength="250" Nullable="false" />
-    <Property Name="foto" Type="nvarchar(max)" />
-    <Property Name="estatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="numeroid" Type="varchar" MaxLength="30" />
+    <Property Name="tipoid" Type="varchar" MaxLength="10" />
+    <Property Name="nombre" Type="varchar" MaxLength="40" />
+    <Property Name="placa" Type="varchar" MaxLength="12" />
+    <Property Name="marca" Type="varchar" MaxLength="20" />
+    <Property Name="submarca" Type="varchar" MaxLength="30" />
+    <Property Name="color" Type="varchar" MaxLength="15" />
+    <Property Name="listanegradetalle" Type="varchar" MaxLength="4000" />
+    <Property Name="idpersona" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_guardia_usuario">
     <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
@@ -201,42 +187,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_vehiculo_visitante">
-    <End Role="visitante" Type="Self.visitante" Multiplicity="1" />
-    <End Role="vehiculo" Type="Self.vehiculo" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="visitante">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="vehiculo">
-        <PropertyRef Name="idvisitante" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_visita_vehiculo">
-    <End Role="vehiculo" Type="Self.vehiculo" Multiplicity="0..1" />
-    <End Role="visita" Type="Self.visita" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="vehiculo">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="visita">
-        <PropertyRef Name="idvehiculo" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_visita_visitante">
-    <End Role="visitante" Type="Self.visitante" Multiplicity="1" />
-    <End Role="visita" Type="Self.visita" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="visitante">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="visita">
-        <PropertyRef Name="idvisitante" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -278,9 +228,7 @@
     <EntitySet Name="turno" EntityType="Self.turno" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usuariobitacora" EntityType="Self.usuariobitacora" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="vehiculo" EntityType="Self.vehiculo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="visita" EntityType="Self.visita" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="visitante" EntityType="Self.visitante" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_guardia_usuario" Association="Self.FK_guardia_usuario">
       <End Role="usuario" EntitySet="usuario" />
       <End Role="guardia" EntitySet="guardia" />
@@ -296,18 +244,6 @@
     <AssociationSet Name="FK_usuariobitacora_usuario" Association="Self.FK_usuariobitacora_usuario">
       <End Role="usuario" EntitySet="usuario" />
       <End Role="usuariobitacora" EntitySet="usuariobitacora" />
-    </AssociationSet>
-    <AssociationSet Name="FK_vehiculo_visitante" Association="Self.FK_vehiculo_visitante">
-      <End Role="visitante" EntitySet="visitante" />
-      <End Role="vehiculo" EntitySet="vehiculo" />
-    </AssociationSet>
-    <AssociationSet Name="FK_visita_vehiculo" Association="Self.FK_visita_vehiculo">
-      <End Role="vehiculo" EntitySet="vehiculo" />
-      <End Role="visita" EntitySet="visita" />
-    </AssociationSet>
-    <AssociationSet Name="FK_visita_visitante" Association="Self.FK_visita_visitante">
-      <End Role="visitante" EntitySet="visitante" />
-      <End Role="visita" EntitySet="visita" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -183,6 +183,27 @@
     <Compile Include="Controllers\WebApiControllers\CommunityController.cs" />
     <Compile Include="Controllers\WebApiControllers\FunctionApi.cs" />
     <Compile Include="Controllers\WebApiControllers\VisitasApiController.cs" />
+    <Compile Include="Models\omnicommunity.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>omnicommunity.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\omnicommunity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>omnicommunity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\omnicommunity.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>omnicommunity.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\persona.cs">
+      <DependentUpon>omnicommunity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\personavehiculo.cs">
+      <DependentUpon>omnicommunity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Seguridad\Autenticacion.cs" />
     <Compile Include="Controllers\AdmiDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -243,12 +264,9 @@
       <DependentUpon>sqlGuardHouse.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vehiculo.cs">
-      <DependentUpon>sqlGuardHouse.tt</DependentUpon>
+      <DependentUpon>omnicommunity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\visita.cs">
-      <DependentUpon>sqlGuardHouse.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\visitante.cs">
       <DependentUpon>sqlGuardHouse.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1111,6 +1129,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\omnicommunity.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>omnicommunity.edmx</DependentUpon>
+      <LastGenOutput>omnicommunity.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\omnicommunity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>omnicommunity.edmx</DependentUpon>
+      <LastGenOutput>omnicommunity.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\sqlGuardHouse.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>sqlGuardHouse.edmx</DependentUpon>
@@ -1157,6 +1185,13 @@
     </EntityDeploy>
     <Content Include="Models\sqlGuardHouse.edmx.diagram">
       <DependentUpon>sqlGuardHouse.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\omnicommunity.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>omnicommunity.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\omnicommunity.edmx.diagram">
+      <DependentUpon>omnicommunity.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

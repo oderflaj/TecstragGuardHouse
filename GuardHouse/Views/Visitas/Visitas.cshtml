@@ -83,11 +83,11 @@
                     <table id="visitaRegistrada" class="table table-bordered table-striped  display responsive nowrap" cellspacing="0" width="100%">
                         <thead class="">
                             <tr>
-                                <th>Hora Entrada</th>
+                                <th>Hora Entrada 24 Hrs</th>
                                 <th>Domicilio</th>
                                 <th>Nombre</th>
                                 <th>Tipo ID</th>
-                                <th>Automovil</th>
+                                <th>Medio Entrada</th>
                             </tr>
                         </thead>
                         <tbody id="visitatbody">
@@ -98,9 +98,9 @@
                                     <tr>
                                         <td>@visi.horaEntrada</td>
                                         <td>@visi.domicilio</td>
-                                        <td>@visi.visitante.nombre</td>
-                                        <td>@visi.visitante.tipoid</td>
-                                        <td>@(visi.vehiculo!=null ? string.Format("Vehiculo {0} - {1} Color {2}", visi.vehiculo.marca, visi.vehiculo.submarca, visi.vehiculo.color) : "CAMINANDO" )</td>
+                                        <td>@visi.nombre</td>
+                                        <td>@visi.tipoid</td>
+                                        <td>@(visi.idvehiculo != null ? string.Format("Vehiculo {0} - {1} Color {2}", visi.marca, visi.submarca, visi.color) : "CAMINANDO" )</td>
                                     </tr>
 
                                 }

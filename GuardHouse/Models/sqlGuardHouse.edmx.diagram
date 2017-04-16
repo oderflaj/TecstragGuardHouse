@@ -6,8 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="10c24ab5762242a99ddc638313c1064c" Name="Diagram1">
         <EntityTypeShape EntityType="guardhouseModel.visita" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="guardhouseModel.visitante" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="guardhouseModel.vehiculo" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="guardhouseModel.guardhouse" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="guardhouseModel.guardia" Width="1.5" PointX="5.5" PointY="5.75" />
         <EntityTypeShape EntityType="guardhouseModel.modulo" Width="1.5" PointX="0.75" PointY="6.75" />
@@ -19,11 +17,8 @@
         <AssociationConnector Association="guardhouseModel.FK_guardia_usuario" />
         <AssociationConnector Association="guardhouseModel.FK_turno_puerta" />
         <AssociationConnector Association="guardhouseModel.FK_turno_usuario" />
-        <AssociationConnector Association="guardhouseModel.FK_vehiculo_visitante" />
-        <AssociationConnector Association="guardhouseModel.FK_visita_visitante" />
         <EntityTypeShape EntityType="guardhouseModel.usuariobitacora" Width="1.5" PointX="10" PointY="7.625" />
         <AssociationConnector Association="guardhouseModel.FK_usuariobitacora_usuario" />
-        <AssociationConnector Association="guardhouseModel.FK_visita_vehiculo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

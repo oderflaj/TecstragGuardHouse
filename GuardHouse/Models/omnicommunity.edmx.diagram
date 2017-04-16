@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b4fa98dfc38b4a4b99076e73bbec4cf5" Name="Diagram1">
+        <EntityTypeShape EntityType="omnicommunityModel.sysdiagrams" Width="1.5" PointX="7.875" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="omnicommunityModel.persona" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="omnicommunityModel.personavehiculo" Width="1.5" PointX="3.5" PointY="0.875" />
+        <EntityTypeShape EntityType="omnicommunityModel.vehiculo" Width="1.5" PointX="6" PointY="1.125" />
+        <AssociationConnector Association="omnicommunityModel.FK_personavehiculo_persona" />
+        <AssociationConnector Association="omnicommunityModel.FK_personavehiculo_vehiculo" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

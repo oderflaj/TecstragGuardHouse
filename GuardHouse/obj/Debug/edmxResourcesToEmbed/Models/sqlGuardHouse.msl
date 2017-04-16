@@ -4,6 +4,15 @@
     <EntitySetMapping Name="visita">
       <EntityTypeMapping TypeName="guardhouseModel.visita">
         <MappingFragment StoreEntitySet="visita">
+          <ScalarProperty Name="idpersona" ColumnName="idpersona" />
+          <ScalarProperty Name="listanegradetalle" ColumnName="listanegradetalle" />
+          <ScalarProperty Name="color" ColumnName="color" />
+          <ScalarProperty Name="submarca" ColumnName="submarca" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="placa" ColumnName="placa" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="tipoid" ColumnName="tipoid" />
+          <ScalarProperty Name="numeroid" ColumnName="numeroid" />
           <ScalarProperty Name="domicilio" ColumnName="domicilio" />
           <ScalarProperty Name="idvehiculo" ColumnName="idvehiculo" />
           <ScalarProperty Name="nopropiedad" ColumnName="nopropiedad" />
@@ -14,33 +23,8 @@
           <ScalarProperty Name="horaEntrada" ColumnName="horaEntrada" />
           <ScalarProperty Name="fecSalida" ColumnName="fecSalida" />
           <ScalarProperty Name="horaSalida" ColumnName="horaSalida" />
-          <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
           <ScalarProperty Name="idpropiedad" ColumnName="idpropiedad" />
           <ScalarProperty Name="estatuspropiedad" ColumnName="estatuspropiedad" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="visitante">
-      <EntityTypeMapping TypeName="guardhouseModel.visitante">
-        <MappingFragment StoreEntitySet="visitante">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="numeroid" ColumnName="numeroid" />
-          <ScalarProperty Name="tipoid" ColumnName="tipoid" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="foto" ColumnName="foto" />
-          <ScalarProperty Name="estatus" ColumnName="estatus" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="vehiculo">
-      <EntityTypeMapping TypeName="guardhouseModel.vehiculo">
-        <MappingFragment StoreEntitySet="vehiculo">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="placa" ColumnName="placa" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="submarca" ColumnName="submarca" />
-          <ScalarProperty Name="color" ColumnName="color" />
-          <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

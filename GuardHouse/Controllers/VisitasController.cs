@@ -7,6 +7,8 @@ using GuardHouse.Models;
 using GuardHouse.Controllers;
 using GuardHouse.Controllers.Shared;
 using System.Text.RegularExpressions;
+using GuardHouse.Controllers.WebApiControllers;
+using System.Web.Script.Serialization;
 
 namespace GuardHouse.Controllers
 {
@@ -52,12 +54,14 @@ namespace GuardHouse.Controllers
         public ActionResult Registro(string numeroid, string placa, string nombrevisitante, string tipoid, string marca, string submarca, string color, string casa, int idcasa, string direccion, string estado, string convenio, string mensaje)
         {
             guardhouseEntities gh = new guardhouseEntities();
+            omnicommunityEntities om = new omnicommunityEntities();
             Exception ex = new Exception();
             Session["ErrorRegistro"] = null;
             Session["ErrorRegistroMensaje"] = null;
 
-            try {
-                if(numeroid.Trim().Length<4)
+            try
+            {
+                if (numeroid.Trim().Length < 4)
                 {
                     ex = new Exception("El número de identificación debe ser de almenos 5 caracteres.");
                     throw ex;
@@ -83,80 +87,86 @@ namespace GuardHouse.Controllers
                     throw ex;
                 }
 
-                visitante invitado = new visitante();
+                persona invitado = new persona();
+                vehiculo coche = new vehiculo();
 
-                invitado = gh.visitante.Where(v => v.numeroid.Equals(numeroid.ToUpper()) && v.estatus.Equals(Label.activo)).FirstOrDefault();
+                invitado = om.persona.Where(p => p.numeroid.Equals(numeroid.ToUpper()) && p.estatus.Equals(Label.activo) && p.estatus.Equals(Label.activo)).FirstOrDefault();
+
 
                 if (invitado == null)
                 {
-                    invitado = new visitante
+                    invitado = new persona
                     {
                         numeroid = numeroid.ToUpper(),
                         tipoid = tipoid.ToUpper(),
                         nombre = nombrevisitante.ToUpper().Trim(),
                         estatus = Label.activo
                     };
-                    gh.visitante.Add(invitado);
-                    gh.SaveChanges();
+                    
+                    om.persona.Add(invitado);
+                    om.SaveChanges();
                 }
-                else if(invitado.tipoid.Equals(tipoid.ToUpper()) && !invitado.nombre.Equals(nombrevisitante.ToUpper().Trim()))
+                else if (invitado.tipoid.Equals(tipoid.ToUpper()) && !invitado.nombre.Equals(nombrevisitante.ToUpper().Trim()))
                 {
-                    ex = new Exception("Esta registrando un VISITANTE previamente registrado con el mismo número y tipo de IDENTIFICACION y diferente NOMBRE. Si el nombre del visitante es muy distinto al registrado apunte los datos de la IDENTIFICACION a mano y reporte al administrador y seleccione el valor existente para dejarlo pasar; si el nombre no cambia mucho solo seleccione el valor existente.");
+                    ex = new Exception("Esta registrando un VISITANTE previamente registrado con el mismo número y tipo de IDENTIFICACION:"+ numeroid.ToUpper() + " y diferente NOMBRE:"+ nombrevisitante.ToUpper().Trim() + ". Si el nombre del visitante es muy distinto al registrado apunte los datos de la IDENTIFICACION a mano y reporte al administrador y seleccione el valor existente para dejarlo pasar; si el nombre no cambia mucho solo seleccione el valor existente.");
                     Session["idVisitanteAlerta"] = numeroid.ToUpper();
                     Session["alertag"] = string.Format("Visitante SOSPECHOSO: ID->{0} Tipo->{1} Nombre->{2}.", numeroid.ToUpper(), tipoid.ToUpper(), nombrevisitante.ToUpper().Trim());
                     throw ex;
                 }
 
+                ///Sección Coche
                 string formaIng = "CAMINANDO";
 
-                vehiculo coche = new vehiculo();
-                //Regex rgx = new Regex("[^a-zA-Z0-9 -]");
                 Regex rgx = new Regex("[^a-zA-Z0-9]");
                 placa = rgx.Replace(placa, "").ToUpper();
 
+                int vehix = 0;
+
                 if (!placa.Equals("CAMINANDO"))
                 {
-                    
-                    coche = gh.vehiculo.Where(c => c.placa.Equals(placa)).FirstOrDefault();
+                    coche = om.vehiculo.Where(c => c.placa.Equals(placa)).FirstOrDefault();
+                
 
                     if (coche == null)
                     {
-
-
                         coche = new vehiculo
                         {
                             placa = placa,
                             marca = marca.ToUpper(),
                             submarca = submarca.ToUpper(),
-                            color = color.ToUpper(),
-                            idvisitante = invitado.id
+                            color = color.ToUpper()
                         };
-                        gh.vehiculo.Add(coche);
-                        gh.SaveChanges();
+                        om.vehiculo.Add(coche);
+                        om.SaveChanges();
                     }
                     else if (!coche.color.Equals(color.ToUpper().Trim()) || !coche.marca.Equals(marca.ToUpper().Trim()) || !coche.submarca.Equals(submarca.ToUpper().Trim()))
                     {
-                        ex = new Exception("Esta registrando un Vehiculo previamente registrado con el mismo número de placa. Si el auto varia en SUBMODELO ó COLOR apunte los datos a mano y reporte al administrador y seleccione el valor existente; de lo contrario solo seleccione el valor existente.");
+                        ex = new Exception("Esta registrando un Vehiculo previamente registrado con el mismo número de placa:"+ placa + ". Valores registrados previamente MARCA:"+ coche.marca + ", SUBMODELO:<B>"+ coche.submarca + ",  COLOR:"+ coche.color + ". Si se trata de otro coche apunte los datos a mano y reporte al administrador y seleccione el valor existente; de lo contrario solo seleccione el valor existente.");
                         Session["placa"] = placa;
-                        Session["alertav"] = string.Format("Automovil SOSPECHOSO: Placa->{0} Marca->{1} Submarca->{2} Color->{3}.",placa, marca.ToUpper(), submarca.ToUpper(), color.ToUpper());
+                        Session["alertav"] = string.Format("Automovil SOSPECHOSO: Placa->{0} Marca->{1} Submarca->{2} Color->{3}.", placa, marca.ToUpper(), submarca.ToUpper(), color.ToUpper());
                         throw ex;
                     }
-                    else if (coche.idvisitante != invitado.id)
-                    {
-                        vehiculo newCoche = new vehiculo
-                        {
-                            placa = placa,
-                            marca = marca.ToUpper(),
-                            submarca = submarca.ToUpper(),
-                            color = color.ToUpper(),
-                            idvisitante = invitado.id
-                        };
-                        gh.vehiculo.Add(newCoche);
-                        gh.SaveChanges();
-                        coche = newCoche;
-                    }
+
+                    vehix = coche.id;
+
                     formaIng = string.Format("en automovil {0} {1} placa {2} color {3}", coche.marca, coche.submarca, coche.placa, coche.color);
                 }
+
+                var pc = om.personavehiculo.Where(pv=>pv.idpersona==invitado.id && pv.idvehiculo == vehix && pv.estatus.Equals(Label.activo)).ToList();
+
+                if (pc.Count == 0 && !placa.Equals("CAMINANDO"))
+                {
+                    var perco = new personavehiculo
+                    {
+                        idpersona = invitado.id,
+                        idvehiculo = vehix,
+                        estatus = Label.activo,
+                        fecha = DateTime.Now
+                    };
+                    om.personavehiculo.Add(perco);
+                    om.SaveChanges();
+                }
+                
 
                 puerta puerta = new puerta();
                 turno turno = new turno();
@@ -194,15 +204,22 @@ namespace GuardHouse.Controllers
 
                 visita visitax = new visita
                 {
-                    fecEntrada = DateTime.Now,
+                    fecEntrada = DateTime.Parse( DateTime.Now.ToShortDateString()),
                     horaEntrada = DateTime.Now.ToString("HH:mm"),
-                    idvisitante = invitado.id,
+                    idpersona = invitado.id,
+                    nombre = invitado.nombre,
+                    numeroid = invitado.numeroid,
+                    tipoid = invitado.tipoid,
                     idpropiedad = idcasa,
                     estatuspropiedad = estado,
                     detalle1 = detalle1,
                     detalle2 = detalle2,
                     nopropiedad = casa,
-                    domicilio = direccion + " #"+casa
+                    domicilio = direccion + " #"+casa,
+                    placa = (coche!=null? coche.placa:null),
+                    marca = (coche != null ? coche.marca : null),
+                    submarca = (coche != null ? coche.submarca : null),
+                    color = (coche != null ? coche.color : null)
 
                 };
 
@@ -213,6 +230,27 @@ namespace GuardHouse.Controllers
 
                 gh.visita.Add(visitax);
                 gh.SaveChanges();
+
+                puerta gate = (puerta)Session["puerta"];
+
+
+                var regVisita = new { idpuerta = gate.id.ToString(),
+                                    condominio = Session["condominio"].ToString(),
+                                    clave = Session["clave"].ToString(),
+                                    visita = new JavaScriptSerializer().Serialize(visitax) };
+
+                string respuesta = "";
+                try
+                {
+                    string restapi = "/api/data/RegistroVisita";
+                    respuesta = FunctionApi.PostCommunityInfo(restapi, new JavaScriptSerializer().Serialize(regVisita));
+                }
+                catch (Exception e)
+                {
+                    respuesta = e.Message;
+                }
+                
+
 
             }
             catch(Exception e)
