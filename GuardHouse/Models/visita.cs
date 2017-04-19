@@ -35,5 +35,6 @@ namespace GuardHouse.Models
         public string color { get; set; }
         public string listanegradetalle { get; set; }
         public int idpersona { get; set; }
+        public string usuarioguardhouse { get; set; }
     }
 }

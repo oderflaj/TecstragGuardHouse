@@ -52,8 +52,10 @@
                     </div><!-- /.col -->
                 </div>
                 <input type="hidden" name="tk" id="tk" />
+                <input type="hidden" name="lat" id="lat" />
+                <input type="hidden" name="lon" id="lon" />
             </form>
-            <a href="#">Olvide Contraseña</a><br>
+            <a id="newpw" href="#">Olvide Contraseña</a><br>
         </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
     <!-- jQuery 2.1.4 -->
@@ -63,23 +65,28 @@
     <!-- iCheck -->
     <script src="../../Content/plugins/iCheck/icheck.min.js"></script>
     <script>
+        function setxy(xy)
+        {
+            $("#lat").val(xy.coords.latitude);
+            $("#lon").val(xy.coords.longitude);
+        }
         $(function () {
-
+            navigator.geolocation.getCurrentPosition(setxy);
             $("form").submit(function (e) {
                 if ($("#tk").val() == "") {
-
                     e.preventDefault();
                     var loginData = {
                         grant_type: 'password',
                         username: $("#email").val(),
                         password: $("#password").val()
                     };
-                
+
                     $.ajax({
                         type: 'POST',
                         url: '/Token',
                         data: loginData
                     }).done(function (data) {
+
                         $("#tk").val(data.access_token);
                         $("form").unbind('submit').submit();
                     }).fail(function () {
@@ -88,11 +95,25 @@
                         $("form").unbind('submit').submit();
                     });
 
-                    
+
                 }
             });
 
-        
+            $("#newpw").click(function () {
+
+                    if (confirm("Restablecerá su contraseña!")) {
+                        var usr = $("#email").val();
+                        if (usr.length <= 0) {
+                            alert("Debe ingresar un email valido.");
+                            return;
+                        }
+                        $("form").attr("action", "@Url.Action("ReCon", "Login")");
+                        $("form").unbind('submit').submit();
+
+                        
+                    }
+                });
+
       });
     </script>
 </body>

@@ -1,3 +1,6 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (!Request.RawUrl.Contains("print"))
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

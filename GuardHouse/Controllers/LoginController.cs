@@ -16,7 +16,8 @@ namespace GuardHouse.Controllers
             return View("LoginUser");
         }
 
-        public ActionResult Sign(usuario usx, string tk)
+        #region Sign
+        public ActionResult Sign(usuario usx, string tk, string lat = null, string lon = null)
         {
             guardhouseEntities gh = new guardhouseEntities();
 
@@ -124,6 +125,28 @@ namespace GuardHouse.Controllers
                         throw ex;
                     }
 
+                    if (System.Configuration.ConfigurationManager.AppSettings.Get("geolocalizacion").ToString().Equals("1"))
+                    {
+                        var geo = puerta.geolocalizacion.Split('|');
+                        decimal xloc = decimal.Parse(geo[0]);
+                        decimal yloc = decimal.Parse(geo[1]);
+                        decimal rango = Math.Abs(decimal.Parse(System.Configuration.ConfigurationManager.AppSettings.Get("rangoGeo").ToString()));
+                        decimal x = decimal.Parse(lat);
+                        decimal y = decimal.Parse(lon);
+
+                        if (Math.Abs(xloc - x) > rango || Math.Abs(yloc - y) > rango)
+                        {
+                            //Se almacena el login en la bitacora
+                            using (Bitacora bit = new Bitacora(usx.email.Trim().ToLower()))
+                            {
+                                bit.UbicacionErronea(lat,lon);
+                            }
+                            ex = new Exception("Esta accediendo desde una ubicación no permitida, se reportara a la Administración..");
+                            throw ex;
+                        }
+
+                    }
+
 
                 }
 
@@ -207,7 +230,9 @@ namespace GuardHouse.Controllers
             }
 
         }
+        #endregion
 
+        #region Logout
         public ActionResult Logout(usuario um)
         {
             Session.Abandon();
@@ -220,8 +245,9 @@ namespace GuardHouse.Controllers
             ViewBag.InfoMensaje = "Se ha cerrado la sesión exitosamente";
             return View("LoginUser");
         }
+        #endregion
 
-
+        #region TimeOut
         public ActionResult Timeout()
         {
             Session.Abandon();
@@ -234,5 +260,68 @@ namespace GuardHouse.Controllers
             ViewBag.InfoMensaje = "Se termino el tiempo de sesión!";
             return View("LoginUser");
         }
+        #endregion
+
+        #region Restablecer Password
+        [HttpPost]
+        public ActionResult ReCon(string email)
+        {
+            string user = email.Trim().ToLower();
+            guardhouseEntities gh = new guardhouseEntities();
+            Exception ex = new Exception();
+            try
+            {
+                string usr = user.Trim().ToLower();
+                var ux = gh.usuario.Where(u => u.email.Equals(usr) && u.estatus.Equals(Label.activo)).ToList();
+
+                if (ux.Count() <= 0)
+                {
+                    ex = new Exception( "El usuario no se encuentra Activo o no esta registrado en el sistema.");
+                    throw ex;
+                }
+                if (ux.Count() > 1)
+                {
+                    ex = new Exception("Ya se tiene un usuario activo con el mismo email.");
+                    throw ex; 
+                }
+                var uxn = ux.FirstOrDefault();
+                string pw = Function.MakePw();
+                uxn.password = Function.GetPw(pw);
+                gh.SaveChanges();
+
+                var ghx = gh.guardhouse.FirstOrDefault();
+
+                string from = System.Configuration.ConfigurationManager.AppSettings.Get("from").ToString();
+                string password = System.Configuration.ConfigurationManager.AppSettings.Get("password").ToString();
+                string to = ghx.emailresponsable;
+                string asunto = string.Format("Restablecimiento de contraseña para el usuario: {0}", user.Trim().ToLower());
+                string mensaje = "Se ha restablecido la siguiente contraseña:<ul><li><b>Usuario: </b>"+ user.Trim().ToLower() + "</li><li><b>Contraseña: </b>"+pw+"</li></ul>";
+
+                Function.SendEmail(from, password,to,asunto,mensaje);
+
+                ViewBag.Alert = true;
+                ViewBag.AlertaMensaje = "Se ha restablecido la contraseña, la nueva contraseña se la proporcionara su administrador, contactelo en el número: " + ghx.telefonoresponsable  ;
+
+                using (Bitacora bit = new Bitacora(user))
+                {
+                    bit.CambioPw();
+                }
+
+                return View("LoginUser");
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = true;
+                ViewBag.ErrorMensaje = e.Message;
+                return View("LoginUser");
+
+            }   
+            finally
+            {
+                if (gh != null)
+                    gh.Dispose();
+            }
+        }
+        #endregion
     }
 }

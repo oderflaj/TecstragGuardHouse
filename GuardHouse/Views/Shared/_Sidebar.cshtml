@@ -34,7 +34,7 @@
                         {
                             <li class="@( (ViewContext.RouteData.Values["action"].ToString().Equals(m.nombre.ToString()) ? "active" : "" )) ">
                                 @*@Html.ActionLink(m.texto.ToString(), m.nombre.ToString(), "Modulo")*@
-                                <a href=@Url.Action(m.nombre.ToString(),"Modulo")>
+                                <a href=@Url.Action(m.nombre.ToString(),"Modulos")>
                                     <i class="fa @((m.icono.ToString().Trim()=="" ? "fa-circle-o" : m.icono.ToString()))"></i> <span>@m.texto.ToString()</span>
                                 </a>
                             </li>
@@ -56,7 +56,7 @@
                                             if (ssm != null)
                                             {
                                                 <li class="@( (ViewContext.RouteData.Values["action"].ToString().Equals(ssm.nombre.ToString()) ? "active" : "" )) ">
-                                                    <a href=@Url.Action(ssm.nombre.ToString(),"Modulo")>
+                                                    <a href=@Url.Action(ssm.nombre.ToString(),"Modulos")>
                                                         <i class="fa fa-circle-o"></i> @ssm.texto.ToString()
                                                     </a>
                                                 </li>

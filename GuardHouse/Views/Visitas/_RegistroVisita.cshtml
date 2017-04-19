@@ -287,6 +287,11 @@
 
 
         $(".siguiente").click(function () {
+            let nocasa;
+            nocasa = $("#nocasa").val();
+            nocasa = myTrim(nocasa);
+            console.log("|" + nocasa + "|");
+            $("#nocasa").val(nocasa);
             tablav.fnClearTable(); //Limpia tabla de resultados probables
             $(".alertmodalcasa").hide();
             $("#overlaycasa").show();
@@ -298,9 +303,10 @@
             }
             document.getElementById("regExpress").reset();
             ///////////
+            
             $.ajax({
                 type: 'GET',
-                url: '/api/data/PropiedadEstatus/' + $("#nocasa").val(),
+                url: '/api/data/PropiedadEstatus/' + nocasa,
                 headers: { "Authorization":"bearer @Session["tk"].ToString()"}
                 }).done(function (data) {
                     console.log(data);
@@ -309,11 +315,11 @@
                     var amonestacion = json["respuesta"][1];
                     var permitir = json["respuesta"][2];
                     var mensaje = json["respuesta"][3];
-                    console.log(json);
-                    console.log(propiedad);
-                    console.log(amonestacion);
-                    console.log(permitir);
-                    console.log(mensaje);
+                    //console.log(json);
+                    //console.log(propiedad);
+                    //console.log(amonestacion);
+                    //console.log(permitir);
+                    //console.log(mensaje);
                     $("#domicilio").html(" - " + propiedad.calle + " #" + propiedad.numero);
                     $(".alertmodalestado").removeClass("alert-danger");
                     $(".alertmodalestado").removeClass("alert-info");

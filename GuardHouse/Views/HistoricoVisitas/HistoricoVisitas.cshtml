@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewBag.Title = "Historico de Visitas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@RenderPage("~/Views/Shared/_ContentHeader.cshtml")
+
+<!-- DataTables -->
+<link href="../../Content/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+<link href="../../Content/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet" />
+<link href="../../Content/plugins/daterangepicker2/daterangepicker.css" rel="stylesheet" />
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-danger alert-dismissable menError" style="display:none">
+                <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                <div id="MensajeError"></div>
+            </div>
+        </div>
+    </div>
+    @RenderPage("~/Views/Shared/_Mensaje.cshtml")
+    <!--Tabla Resultados-->
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <div class="box">
+                <!--Header-->
+                <div class="box-header">
+                    <div class="col-xs-12 col-sm-3 col-md-2">
+                        <h4 class="" id="Titulo">
+                            Visitas
+                        </h4>
+                    </div><!-- /.col -->
+
+                    <div class="col-sm-5 col-md-3 col-xs-12">
+                        <div class="input-group">
+                            <div class="input-group-addon hidden-xs">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control " id="rango" name="rango" onkeydown="return false" value="@ViewBag.rango">
+                            <div class="input-group-addon hidden-lg hidden-md hidden-sm btnRango" data-toggle="tooltip" data-placement="top" title="Presiona el botón de busqueda.">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div><!-- /.input group -->
+                    </div>
+
+                    <div class="col-sm-2 col-xs-6 hidden-xs">
+                        <br class="hidden-lg hidden-md hidden-sm" />
+                        <button type="button" class="btn btn-default  btnRango">
+                            <i class="fa fa-search"></i> Buscar
+                        </button>
+                    </div>
+                    <div class="col-sm-2 col-xs-3 ">
+                        <button type="button" class="btn btn-default  imprime">
+                            <span class="fa fa-file-pdf-o hidden-xs"></span> Imprimir
+                        </button>
+                    </div>
+                    <div class="col-sm-2 col-xs-3 ">
+                        <button type="button" class="btn btn-default  descarga">
+                            <span class="fa fa-file-excel-o hidden-xs"></span> Descarga
+                        </button>
+                    </div>
+                    
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table id="visitas" class="table table-bordered table-striped  display responsive nowrap" cellspacing="0" width="100%">
+                        <thead class="">
+                            <tr>
+                                <th>Fecha </th>
+                                <th>Hora </th>
+                                <th>Domicilio </th>
+                                <th>Estatus</th>
+                                <th>Placa</th>
+                                <th>Nombre</th>
+                                <th>Detalle</th>
+                                <th>Información</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visitasbody"></tbody>
+                    </table>
+                </div><!--/.box-body-->
+                <div class="overlay" id="overlay" style="display:none">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    <!--Tabla Resultados-->
+</section>
+
+<!-- DataTables -->
+<script src="../../Content/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../Content/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="../../Content/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../Content/plugins/fullcalendar/lib/moment.min.js"></script>
+<script src="../../Content/plugins/daterangepicker2/daterangepicker.js"></script>
+<script src="~/Content/plugins/tstgFunctions.js"></script>
+<script>
+    let tablav;
+    $(document).ready(function () {
+        //Data Grid
+        tablav = $('#visitas');
+        tablav.dataTable({
+            "stateSave": true,
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todo"]],
+            "lengthChange": true,
+            "autoWidth": true,
+            "language": {
+                "decimal": "",
+                "emptyTable": "No exite información relacionada al visitante.",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ encontrados",
+                "infoEmpty": "Mostrando 0 a 0 de 0 encontrados",
+                "infoFiltered": "(Filtrado de  _MAX_ Total Encontrados)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Ver _MENU_ registros",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "No se encontro Ningun Registro",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Previo"
+                }
+            }
+        });
+
+
+        $('#rango').daterangepicker({
+            "startDate": "@ViewBag.from",
+            "endDate": "@ViewBag.to",
+            "locale": {
+                "format": "DD/MM/YYYY",
+                "separator": "  -  ",
+                "applyLabel": "Ok",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "Desde",
+                "toLabel": "a",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agusto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        GetVisitas("@ViewBag.fromapi", "@ViewBag.toapi")
+
+        $(".btnRango").click(function () {
+
+            let rango = $("#rango").val();
+            let rangos = rango.split("-");
+            let fromx = rangos[0].split("/");
+            let tox = rangos[1].split("/");
+            let from = fromx[2] + "-" + fromx[1] + "-" + fromx[0];
+            let to = tox[2] + "-" + tox[1] + "-" + tox[0];
+
+            GetVisitas(from, to);
+
+        });
+
+        $(".descarga").click(function () {
+            let rango = $("#rango").val();
+            let rangos = rango.split("-");
+            let fromx = rangos[0].split("/");
+            let tox = rangos[1].split("/");
+            let from = myTrim(fromx[2]) + myTrim(fromx[1]) + myTrim(fromx[0]);
+            let to = myTrim(tox[2]) + myTrim(tox[1]) + myTrim(tox[0]);
+            //let title = "Fecha,Hora,Domicilio,Estatus,Nombre,No Identificacion,Tipo,Placa,Marca,Submarca,Color,Usuario Puerta, Detalle, Sub Detalle";
+            exportToCsv("@ViewBag.excel" + from + "_" + to + ".csv", vix);
+        });
+
+        $(".imprime").click(() => {
+            let rango = $("#rango").val();
+            let rangos = rango.split("-");
+            let fromx = rangos[0].split("/");
+            let tox = rangos[1].split("/");
+            let from = myTrim(fromx[2]) + "-" + myTrim(fromx[1]) + "-" + myTrim(fromx[0]);
+            let to = myTrim(tox[2]) + "-" + myTrim(tox[1]) + "-" + myTrim(tox[0]);
+            window.open("@Url.Action("HistoricoVisitas", "HistoricoVisitas")?from=" + from + "&to=" + to + "&print=1", '_blank');
+        });
+
+
+    });
+
+    let vix;
+
+    function GetVisitas(from, to)
+    {
+        $("#overlay").show();
+        $.ajax({
+            type: 'GET',
+            url: '/api/data/HistoricoVisitas/' + from + '/' + to,
+            headers: { "Authorization": "bearer @Session["tk"].ToString()" }
+        }).done(function (s) {
+
+            $(".menError").hide();
+            $("#MensajeError").html("");
+            //console.log(s);
+            vix = s.visitas;
+            let oxTable = tablav;
+            oxTable.fnClearTable();
+            for (var i = 0; i < vix.length; i++) {
+                oxTable.fnAddData([vix[i].Fecha_Entrada, vix[i].Hora_Entrada, vix[i].Domicilio, vix[i].Estatus, (vix[i].Placa == null ? "CAMINANDO" : vix[i].Placa), vix[i].Nombre, vix[i].Detalle, vix[i].Subdetalle]);
+            }
+            $("#overlay").hide();
+
+        }).fail(function (e) {
+            $("#overlay").hide();
+            $(".menError").show();
+            $("#MensajeError").html("Falla al obtener el historial de visitas, intente de nuevo!");
+            console.log(e.responseText);
+        });
+    }
+</script>

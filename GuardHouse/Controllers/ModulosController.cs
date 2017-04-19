@@ -16,16 +16,19 @@ namespace GuardHouse.Controllers
             return RedirectToAction("AdmiDashboard", "AdmiDashboard");
         }
 
-
         public ActionResult Visitas()
         {
             return RedirectToAction("Visitas", "Visitas");
         }
 
-
         public ActionResult Agenda()
         {
             return RedirectToAction("Agenda", "Agenda");
+        }
+
+        public ActionResult HistoricoVisitas()
+        {
+            return RedirectToAction("HistoricoVisitas", "HistoricoVisitas");
         }
 
     }

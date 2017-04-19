@@ -16,6 +16,7 @@ namespace GuardHouse.Controllers.WebApiControllers
     [RoutePrefix("api/data")]
     public class VisitasApiController : ApiController
     {
+        [Authorize(Roles = "1,3")]
         [HttpGet]
         [Route("HistoricoVisitante/{numeroid}/{placa}")]
         public IHttpActionResult GetHistoricoVisitante(string numeroid, string placa)

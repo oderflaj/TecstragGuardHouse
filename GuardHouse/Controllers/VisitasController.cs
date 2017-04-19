@@ -219,7 +219,8 @@ namespace GuardHouse.Controllers
                     placa = (coche!=null? coche.placa:null),
                     marca = (coche != null ? coche.marca : null),
                     submarca = (coche != null ? coche.submarca : null),
-                    color = (coche != null ? coche.color : null)
+                    color = (coche != null ? coche.color : null),
+                    usuarioguardhouse = Session["email"].ToString()
 
                 };
 
@@ -237,7 +238,10 @@ namespace GuardHouse.Controllers
                 var regVisita = new { idpuerta = gate.id.ToString(),
                                     condominio = Session["condominio"].ToString(),
                                     clave = Session["clave"].ToString(),
-                                    visita = new JavaScriptSerializer().Serialize(visitax) };
+                                    visita = new JavaScriptSerializer().Serialize(visitax),
+                                    notificacion = System.Configuration.ConfigurationManager.AppSettings.Get("NotificaEmail").ToString(),
+                                    emailPuerta = Session["email"].ToString()
+                };
 
                 string respuesta = "";
                 try

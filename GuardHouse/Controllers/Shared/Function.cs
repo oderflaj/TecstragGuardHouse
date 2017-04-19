@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -126,18 +128,6 @@ namespace GuardHouse.Controllers.Shared
             return UTF8Encoding.UTF8.GetString(resultArray);
         }
 
-        public static string MakePw()
-        {
-            string bases = "ABC123";
-            string seed = DateTime.Today.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
-            Random rd = new Random(Int32.Parse(seed));
-
-            bases += rd.Next().ToString();
-
-            return bases;
-
-        }
-
         /// <summary>
         /// Valida que el email contenga el formato correcto
         /// </summary>
@@ -154,6 +144,51 @@ namespace GuardHouse.Controllers.Shared
             {
                 return false;
             }
+        }
+
+        public static string MakePw()
+        {
+            string bases = "AB";
+            string seed = DateTime.Today.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            Random rd = new Random(Int32.Parse(seed));
+
+            bases += rd.Next().ToString().Substring(0,4) + "yz";
+
+            return bases;
+
+        }
+
+        public static bool SendEmail(string from, string password, string to, string asunto, string mensaje)
+        {
+            try
+            {
+                string host = System.Configuration.ConfigurationManager.AppSettings.Get("host");
+                string port = System.Configuration.ConfigurationManager.AppSettings.Get("port");
+                string enableSsl = System.Configuration.ConfigurationManager.AppSettings.Get("enableSsl");
+
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress(from);
+                msg.To.Add(to);
+                if (System.Configuration.ConfigurationManager.AppSettings.Get("CCO").Equals("1"))
+                {
+                    msg.Bcc.Add(System.Configuration.ConfigurationManager.AppSettings.Get("sentinela"));
+                }
+                msg.Subject = asunto;
+                msg.Body = mensaje;
+                msg.IsBodyHtml = true;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Credentials = new NetworkCredential(from, password );
+                smtp.Host = host;
+                smtp.Port = int.Parse(port);
+                smtp.EnableSsl = (enableSsl.Equals("true") ? true : false);
+                smtp.Send(msg);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return true;
         }
 
     }
