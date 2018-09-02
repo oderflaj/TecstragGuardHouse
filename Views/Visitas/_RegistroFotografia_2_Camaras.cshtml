@@ -1,0 +1,188 @@
+﻿@{
+    var video1 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara1").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("streaming1").ToString()}";
+    var video2 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara2").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("streaming2").ToString()}";
+    var video3 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara3").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("streaming3").ToString()}";
+
+    var foto1 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara1").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("snapshot1").ToString()}";
+    var foto2 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara2").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("snapshot2").ToString()}";
+    var foto3 = $"{System.Configuration.ConfigurationManager.AppSettings.Get("camara3").ToString()}/{System.Configuration.ConfigurationManager.AppSettings.Get("snapshot3").ToString()}";
+
+    int w = 350;
+    int h = 270;
+
+
+
+
+}
+<div class="col-xs-12 col-sm-6">
+    <div class="row" >
+        <div class="col-xs-12">
+            <label style="font-size: 18px;" for="conductor">Conductor</label>
+        </div>
+        <div class="col-xs-12 c1">
+            <img id="camara1" width="@w" height="@h" name="camara1" style="-webkit-user-select: none;" src="@(new MvcHtmlString(video1))" >
+        </div>
+            
+   </div>
+</div>
+<div class=" col-xs-12 col-sm-6">
+    <div class="row">
+        <div class="col-xs-12">
+            <label style="font-size: 18px;" for="PlacaImg">Imagen Placa</label>
+        </div>
+        <div class="col-xs-12 c2">
+            <img id="camara2" width="@w" height="@h" name="camara2" style="-webkit-user-select: none;" src="@(new MvcHtmlString(video2))" >
+        </div>
+    </div>
+</div>
+<div class=" col-xs-12 col-sm-6">
+    <div class="row">
+        <div class="col-xs-12">
+            <label style="font-size: 18px;" for="identificacion">Identificaci&oacute;n</label>
+        </div>
+        <div class="col-xs-12 c3">
+            <img id="camara3" width="@w" height="@h" name="camara3" style="-webkit-user-select: none;" src="@(new MvcHtmlString(video3))" >
+        </div>
+    </div>
+</div>
+<div class=" col-xs-12 col-sm-6" style="">
+    <div class="row">
+        <div class="col-xs-12">
+            <label style="font-size: 18px;" for="controles">Controles</label>
+        </div>
+        <div class="col-xs-12">
+            <p>
+                <button type="button" id="foto" activo="0" class="btn btn-info btn-lg"><i class="fa fa-camera"></i>&nbsp;<span id="leyenda">Capturar</span></button>
+            </p>
+            
+        </div>
+        <div class="col-xs-12" >
+            <p >
+                <div id="messagePhoto" style="display:none">
+                    <div class="alert  alert-dismissable alertmodalestado alert-success">
+                        <h4><i class="icon fa fa-check"></i> Capturado</h4>
+                        <div id="messModalCamara">Se han tomado las fotos del visitante, si alguna no es clara presione el bot&oacute;n <b>Modificar</b>.<br />Si las fotografias son correctas presione registrar.</div>
+                    </div>
+                </div>
+            </p>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+
+    const video1 = "@video1"
+    const video2 = "@video2"
+    const video3 = "@video3"
+
+    const foto1 = "@foto1"
+    const foto2 = "@foto2"
+    const foto3 = "@foto3"
+
+    let v = 0
+
+
+    function convertImgToDataURLviaCanvas(url, callback, outputFormat) {
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = function () {
+            var canvas = document.createElement('CANVAS');
+            var ctx = canvas.getContext('2d');
+            var dataURL;
+            canvas.height = this.height;
+            canvas.width = this.width;
+            ctx.drawImage(this, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            callback(dataURL);
+            console.log("callback...", dataURL)
+            canvas = null;
+        };
+        console.log("Carga URL...",url)
+        img.src = url;
+    }
+
+    function convertFileToDataURLviaFileReader(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }
+
+    $(function () {
+        $("#foto").click(() => {
+
+            if ($("#foto").attr("activo") == "0") {
+
+                v++;
+
+                let c1 = foto1 + '?v=' + v.toString();
+                let c2 = foto2 + '?v=' + v.toString();
+                let c3 = foto3 + '?v=' + v.toString();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/data/FotoVisita/',
+                    contentType: "application/json",
+                    headers: { "Authorization": "bearer @Session["tk"].ToString()" }
+                }).done(function (data) {
+
+                    
+
+                    c1 = data.visita.camara1
+                    c2 = data.visita.camara2
+                    c3 = data.visita.camara3
+                    
+                    $("#fotocamara1").val(c1)
+                    $("#fotocamara2").val(c2)
+                    $("#fotocamara3").val(c3)
+
+                    });
+
+
+
+                $("#camara1").attr("src", c1);
+                $("#camara2").attr("src", c2);
+                $("#camara3").attr("src", c3);
+                $("#foto").attr("activo", "1");
+                $("#messagePhoto").show();
+                $("#foto").removeClass("btn-info")
+                $("#foto").addClass("btn-warning")
+                $("#foto i").removeClass("fa-camera")
+                $("#foto i").addClass("fa-recycle")
+                $("#leyenda").html("Modificar")
+                return
+            }
+
+            if ($("#foto").attr("activo") == "1") {
+
+                $("#camara1").attr("src", video1);
+                $("#camara2").attr("src", video2);
+                $("#camara3").attr("src", video3);
+                $("#foto").attr("activo", 0);
+                $("#messagePhoto").hide();
+                $("#foto").removeClass("btn-warning")
+                $("#foto").addClass("btn-info")
+                $("#foto i").removeClass("fa-recycle")
+                $("#foto i").addClass("fa-camera")
+                $("#leyenda").html("Capturar")
+
+
+
+
+                return
+            }
+
+
+        });
+
+
+    })
+</script>

@@ -1,0 +1,86 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">NAVEGACION</li>
+
+            @*<li class="active"><a href="@Url.Action("Visitas", "Index")"><i class="fa fa-dashboard"></i> <span>Panel Principal</span></a></li>
+            <li><a href="@Url.Action("Visitas", "Index")"><i class="fa fa-book"></i> <span>Agenda Visitas</span></a></li>*@
+
+            @{
+                //string[] orderMenu = { "Dashboard", "Adminuser", "Perfil", "Avisos", "Avisosconsulta", "Avisosenvio", "Areacomun", "Autorizareserva", "Edocta", "Miedocta", "Edoctacondominio", "Reportes", "Pago", "Pagoconsulta", "Pagocuota", "Admipagos" };
+                string[] orderMenu = System.Configuration.ConfigurationManager.AppSettings.Get("orden").ToString().Split('|');
+                string[] orderSubMenu = orderMenu;
+                List<GuardHouse.Models.modulo> menu = (List<GuardHouse.Models.modulo>)Session["menu"];
+
+                foreach (string item in orderMenu)
+                {
+
+                    var m = menu.Where(mn => mn.nombre.Equals(item)).FirstOrDefault();
+
+
+                    if (m != null)
+                    {
+                        if (m.agrupador == 0 && m.premodulo == 0 && m.estatus.Equals("activo"))
+                        {
+                            <li class="@( (ViewContext.RouteData.Values["action"].ToString().Equals(m.nombre.ToString()) ? "active" : "" )) ">
+                                @*@Html.ActionLink(m.texto.ToString(), m.nombre.ToString(), "Modulo")*@
+                                <a href=@Url.Action(m.nombre.ToString(),"Modulos")>
+                                    <i class="fa @((m.icono.ToString().Trim()=="" ? "fa-circle-o" : m.icono.ToString()))"></i> <span>@m.texto.ToString()</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (m.agrupador == 1 && m.estatus.Equals("activo"))
+                        {
+                            var sm = menu.Where(sub => sub.premodulo == m.id && sub.estatus.Equals("activo"));
+
+                            <li class="treeview @( (sm.Count(s=>s.nombre.Contains(ViewContext.RouteData.Values["action"].ToString())) > 0 ?  "active" : "" ))">
+                                <a href="#">
+                                    <i class="fa @((m.icono.ToString().Trim()=="" ? "fa-circle-o" : m.icono.ToString()))"></i> <span>@m.texto.ToString()</span><i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    @{
+                                        foreach (string subitem in orderMenu)
+                                        {
+                                            var ssm = sm.Where(smn => smn.nombre.Equals(subitem)).FirstOrDefault();
+                                            if (ssm != null)
+                                            {
+                                                <li class="@( (ViewContext.RouteData.Values["action"].ToString().Equals(ssm.nombre.ToString()) ? "active" : "" )) ">
+                                                    <a href=@Url.Action(ssm.nombre.ToString(),"Modulos")>
+                                                        <i class="fa fa-circle-o"></i> @ssm.texto.ToString()
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    }
+
+                                </ul>
+                            </li>
+
+                                                }
+
+
+                                            }
+
+
+                                        }
+
+
+
+            }
+
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,76 @@
+﻿
+@{
+    Layout = null;
+}
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="@Url.Action("Visitas", "Visitas")" class="logo">
+        <span class="logo-mini"><b>G</b>HS</span>
+        <span class="logo-lg"><b>Guard</b>House</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <span style="display: block; float: left;height: 50px;font-size: 18px;line-height: 50px; text-align: center; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-weight: 300;color: #fff;">
+            <b>@Session["condominio"]</b> @( (Session["noPuerta"] != null ? string.Format("Puerta {0} ", Session["noPuerta"]) : ""))
+        </span>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- User Account: style can be found in dropdown.less -->
+                @*<li>
+                    <a href="@Url.Action("Logout", "Login")">SALIR</a>
+                </li>*@
+                <li class="dropdown user user-menu ">
+                    <a href="#" class="dropdown-toggle btn-block btn-danger btn-md" style="background-color: #dd4b39;" data-toggle="dropdown">
+                        <i class="fa fa-user"></i> Sesión
+                        
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header" style="background-color: #955f09;">
+                            <br /><br />
+                            <!--  <img src="~/Content/img/util/user2-160x160.jpg" class="img-circle" alt="User Image">-->
+                            <p>
+                                 @Session["email"] - @Session["nombrePerfil"]
+                                <small>
+                                    @{
+                                        var guardias = "";
+                                        if (Session["guardia"] != null)
+                                        {
+                                            List<GuardHouse.Models.guardia> guard = (List<GuardHouse.Models.guardia>)Session["guardia"];
+                                            foreach (var g in guard)
+                                            {
+
+                                                guardias += string.Format("{0} |", g.nombre);
+                                            }
+                                        }
+
+                                    }
+                                    @guardias
+                                </small>
+                            </p>
+                        </li>
+                        
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                               
+                            </div>
+                            <div class="pull-right" style="background-color: #dd4b39;">
+                                @Html.ActionLink("Salir", "Logout", "Login", null, new { @class = "btn btn-danger btn-flat" })
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+

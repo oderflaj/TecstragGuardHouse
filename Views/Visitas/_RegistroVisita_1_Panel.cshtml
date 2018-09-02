@@ -1,0 +1,535 @@
+﻿<div id="modalForm" class="modal fade in" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" style="display: none;  ">
+
+    <div class="modal-dialog modal-lg" role="document" style="width:900px">
+        <div class="modal-content  tecstragmodal ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="gridSystemModalLabel"><b>Registro Express<span id="domicilio"></span></b></h3>
+            </div>
+            <div class="modal-body">
+                <div id="panelCasa" style="display:block">
+                    <div class="box" style="border-top: 0px solid #fff;">
+                        <div class="box-body ">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="input-group margin">
+                                        <div class="input-group-btn" style="padding-top: 0px;">
+                                            <button type="button" class="btn btn-instagram" style="padding-bottom: 34px;padding-top: 35px;"><b style="font-size: 20px;">Calle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></button>
+                                        </div><!-- /btn-group -->
+                                        <select class="form-control calle" required="" name="calle" id="calle" placeholder="Calle domicilio" style="font-size: 49px;height: 99.5px;border-color: #3f729b;">
+                                            <option value="0">Seleccione una calle</option>
+                                            @{
+                                                //List<GuardHouse.Models.calle> calles = ViewBag.calles;
+                                                List<string> calles = ViewBag.calles;
+
+                                                foreach (var c in calles)
+                                                {
+                                                    <option value="@c">@c</option>
+                                                }
+                                            }
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="input-group margin">
+                                        <div class="input-group-btn" style="padding-top: 0px;">
+                                            <button type="button" class="btn btn-instagram" style="padding-bottom: 34px;padding-top: 35px;"><b style="font-size: 20px;">No Casa</b></button>
+                                        </div><!-- /btn-group -->
+                                        <input class="form-control" name="nocasa" id="nocasa" required="" placeholder="Número del domicilio" style="font-size: 49px;height: 99.5px;border-color: #3f729b;" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="alert alert-danger alert-dismissable alertmodalcasa" style="display:none">
+                                        <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                        <div id="messModalcasa">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal"><i class="fa fa-times-circle"></i>&nbsp;Cerrar</button>
+                                <button type="button" class="btn btn-lg btn-facebook siguiente">Continuar&nbsp;<i class="fa fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="overlay" id="overlaycasa" style="display:none">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div id="panelVisitante" style="display:none; margin-left: 10px; ">
+                    @RenderPage("~/Views/Visitas/_RegistroVisitante_3_Busqueda.cshtml")
+                    <form id="regExpress" action="@Url.Action("Registro", "Visitas")" method="post">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="alert  alert-dismissable alertmodalestado" style="display:none">
+                                    <h4><i class="icon fa fa-warning"></i> Estado</h4>
+                                    <div id="messModalestado">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="casa" id="casa" />
+                        <input type="hidden" name="direccion" id="direccion" />
+                        <input type="hidden" name="estado" id="estado" />
+                        <input type="hidden" name="convenio" id="convenio" />
+                        <input type="hidden" name="mensaje" id="mensaje" />
+                        <input type="hidden" name="idcasa" id="idcasa" />
+                        <input type="hidden" name="fotocamara1" id="fotocamara1" />
+                        <input type="hidden" name="fotocamara2" id="fotocamara2" />
+                        <input type="hidden" name="fotocamara3" id="fotocamara3" />
+                        <input type="hidden" name="nombrevisitante" id="nombrevisitante" />
+                        <input type="hidden" name="marca" id="marca" />
+                        <input type="hidden" name="submarca" id="submarca" />
+                        <input type="hidden" name="color" id="color" />
+
+                        <div class="input-group margin">
+                            <input type="checkbox" id="caminando" name="caminando" />&nbsp;&nbsp;<b style="font-size:20px" class="caminando">CAMINANDO</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="sinplaca" name="sinplaca" />&nbsp;&nbsp;<b style="font-size:20px" class="sinplaca">SIN PLACA</b>
+                        </div>
+                        <input class="form-control" name="numeroid" id="numeroid" required="" placeholder="Número de identificación" style="font-size: 25px;height: 50px;" type="hidden">
+
+                        <div class="row">
+                            <!--Formulario-->
+                            <div id="formulario" class="col-sm-12 col-xs-12">
+                                <div class="input-group margin">
+                                    <div class="input-group-btn" style="padding-top: 0px;">
+                                        <button type="button" class="btn btn-instagram" style="padding-bottom: 14px;padding-top: 14px;"><b>Placa</b></button>
+                                    </div><!-- /btn-group -->
+                                    <input class="form-control" name="placa" id="placa" required="" autocomplete="off" placeholder="Placa del Automovil." style="font-size: 25px;height: 50px;" type="text">
+                                </div>
+
+                                <div class="" style="margin-top: -5px;border-top-style: solid;margin-bottom: -5px;border-top-width: 0px;">
+                                    <div class="margin col-xs-12">
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre Visitante</label>
+                                            <input class="form-control" name="nombrevisitanteAux" id="nombrevisitanteAux" style="border-color: #3f729b;" placeholder="Nombre en identificación" type="text" required/>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="tipoid" name="tipoid" value="N/A" />
+                                </div>
+                                <div class="row autocomplemento margin" style="margin-top: -5px; border-top-style: solid;margin-bottom: -5px;border-top-width: 0px;">
+                                    <div class="col-xs-12">
+                                        <div class="form-group ">
+                                            <label for="marca">Marca </label>
+                                            <input list="marca"  name="marcaAux" class="form-control" placeholder="Teclear o seleccionar Marca" required="" />
+                                            <datalist id="marca">
+                                                <option value="">Seleccione</option>
+                                                <option value="MOTOCICLETA">MOTOCICLETA</option>
+                                                <option value="NISSAN">NISSAN</option>
+                                                <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+                                                <option value="TOYOTA">TOYOTA</option>
+                                                <option value="CHEVROLET">CHEVROLET</option>
+                                                <option value="HONDA">HONDA</option>
+                                                <option value="FORD">FORD</option>
+                                                <option value="SEAT">SEAT</option>
+                                                <option value="MAZDA">MAZDA</option>
+                                                <option value="RENAULT">RENAULT</option>
+                                                <option value="HYUNDAI">HYUNDAI</option>
+                                                <option value="JEEP">JEEP</option>
+                                                <option value="PEUGEOT">PEUGEOT</option>
+                                                <option value="DODGE">DODGE</option>
+                                                <option value="SUZUKI">SUZUKI</option>
+                                                <option value="CHRYSLER">CHRYSLER</option>
+                                                <option value="GMC">GMC</option>
+                                                <option value="KIA">KIA</option>
+                                                <option value="MITSUBISHI">MITSUBISHI</option>
+                                                <option value="FIAT">FIAT</option>
+                                                <option value="AUDI">AUDI</option>
+                                                <option value="INFINITI">INFINITI</option>
+                                                <option value="VOLVO">VOLVO</option>
+                                                <option value="ABARTH">ABARTH</option>
+                                                <option value="ACURA">ACURA</option>
+                                                <option value="ALFA ROMEO">ALFA ROMEO</option>
+                                                <option value="BAIC">BAIC</option>
+                                                <option value="BENTLEY">BENTLEY</option>
+                                                <option value="BMW">BMW</option>
+                                                <option value="BUICK">BUICK</option>
+                                                <option value="CADILLAC">CADILLAC</option>
+                                                <option value="FAW">FAW</option>
+                                                <option value="FERRARI">FERRARI</option>
+                                                <option value="GEO">GEO</option>
+                                                <option value="GIANT MOTORS">GIANT MOTORS</option>
+                                                <option value="HUMMER">HUMMER</option>
+                                                <option value="JAC">JAC</option>
+                                                <option value="JAGUAR">JAGUAR</option>
+                                                <option value="LAND ROVER">LAND ROVER</option>
+                                                <option value="LINCOLN">LINCOLN</option>
+                                                <option value="LOTUS">LOTUS</option>
+                                                <option value="MASERATI">MASERATI</option>
+                                                <option value="MASTRETTA">MASTRETTA</option>
+                                                <option value="MAYBACH">MAYBACH</option>
+                                                <option value="MERCEDES BENZ">MERCEDES BENZ</option>
+                                                <option value="MERCURY">MERCURY</option>
+                                                <option value="MG">MG</option>
+                                                <option value="MINI">MINI</option>
+                                                <option value="OLDSMOBILE">OLDSMOBILE</option>
+                                                <option value="PONTIAC">PONTIAC</option>
+                                                <option value="PORSCHE">PORSCHE</option>
+                                                <option value="RAM">RAM</option>
+                                                <option value="ROVER">ROVER</option>
+                                                <option value="SAAB">SAAB</option>
+                                                <option value="SMART">SMART</option>
+                                                <option value="SRT">SRT</option>
+                                                <option value="SSANGYONG">SSANGYONG</option>
+                                                <option value="SUBARU">SUBARU</option>
+                                                <option value="TESLA">TESLA</option>
+                                                <option value="OTRO">OTRO</option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-12">
+                                        <div class="form-group ">
+                                            <label for="submarca">Modelo</label>
+                                            <input class="form-control" id="submarcaAux" name="submarcaAux" placeholder="Submarca Vehiculo" type="text">
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-12">
+                                        <div class="form-group">
+                                            <label for="color">Color</label>
+                                            <input class="form-control" id="colorAux" name="colorAux" placeholder="Color Vehiculo" type="text">
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-12">
+                                        <div class="form-group">
+                                            <label for="observaciones">Observaciones</label>
+                                            <textarea class="form-control" name="observacion" id="observacion" style="border-color: #3f729b;" placeholder="Cualquier informaci&oacute;n adicional del visitante que tenga que reportarse." rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/Formulario-->
+                            
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="alert alert-danger alert-dismissable alertmodal" style="display:none">
+                                    <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                                    <div id="messModal">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="eva" value="@ViewBag.SubmitAjax" />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-lg atras"><i class="fa fa-chevron-left"></i>&nbsp;Atras</button>
+                            <button type="button" class="btn btn-default btn-lg" data-dismiss="modal"><i class="fa fa-times-circle"></i>&nbsp;Cerrar</button>
+                            <button type="submit" id="save" class="btn btn-success btn-lg"><i class="fa fa-check"></i>&nbsp;Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
+                <input type="hidden" value="" id="show" />
+
+                <link rel="stylesheet" href="../../Content/plugins/tstgStyles.css">
+                <script src="../../Content/plugins/tstgFunctions.js"></script>
+                
+                <script>
+    function setGuestInfo(rec)
+    {
+
+        $("#placa").val(myTrim(rec[1].innerText).length == 0 ? "CAMINANDO" : rec[0].innerText);
+        //$("#numeroid").val(rec[0].innerText);
+
+        //$("#tipoid").val(rec[0].innerText);
+        $("#nombrevisitante").val(rec[1].innerText);
+        $("[name='marca']").val(rec[2].innerText);
+        $("#submarca").val(rec[3].innerText);
+        $("#color").val(rec[4].innerText);
+
+    }
+
+
+    $(document).ready(function () {
+
+        $("#caminando").click(function () {
+            if ($(this).prop("checked")) {
+                $("#placa").val("CAMINANDO");
+                    $("[name='marcaAux']").val("");
+                $("#submarcaAux").val("");
+                    $("#colorAux").val("")
+
+                $("#placa").attr("disabled","disabled");
+                $("[name='marcaAux']").attr("disabled", "disabled");
+                $("#submarcaAux").attr("disabled", "disabled");
+                $("#colorAux").attr("disabled", "disabled");
+                $("#sinplaca").prop("checked", false);
+                $("#sinplaca").hide();
+                $(".sinplaca").hide();
+
+                $("#formulario").removeClass("col-md-4")
+                $("#fotografias").hide();
+                $('[role="document"]').css("width", "900px");
+
+
+                $(".autocomplemento").hide();
+            }
+            else{
+                $("#placa").val("");
+                $("#placa").removeAttr("disabled");
+                    $("[name='marcaAux']").removeAttr("disabled");
+                    $("#submarcaAux").removeAttr("disabled");
+                    $("#colorAux").removeAttr("disabled");
+                $(".autocomplemento").show();
+                $("#sinplaca").show();
+                $(".sinplaca").show();
+
+                $("#formulario").addClass("col-md-4")
+                $("#fotografias").show();
+                $('[role="document"]').css("width", "100%");
+            }
+
+        });
+
+        $("#sinplaca").click(function () {
+            if ($(this).prop("checked")) {
+                $("#placa").val("SIN_PLACAS");
+                $("#placa").attr("disabled", "disabled");
+                $("#caminando").prop("checked", false);
+                $(".caminando").hide();
+                $("#caminando").hide();
+
+            }
+            else
+            {
+                $(".caminando").show();
+                $("#caminando").show();
+                $("#placa").val("");
+                $("#placa").removeAttr("disabled");
+            }
+        });
+
+        $(".registrar").click(function () {
+
+           
+
+            $(".gral").show();
+
+            var xfm = document.createElement("form");
+            xfm.action = "@Url.Action("Visitas", "Visitas")";
+            xfm.method = "POST";
+            var ipt = document.createElement("input");
+            ipt.id = "show";
+            ipt.name = "show";
+            ipt.value = "show";
+            xfm.appendChild(ipt);
+
+            var bdx = document.getElementsByTagName("body");
+
+            document.body.appendChild(xfm);
+
+            xfm.submit();
+
+        });
+
+        @{
+            if(ViewBag.showRegister != null && ViewBag.showRegister == "show")
+            {
+                @:$("body").addClass("modal-open");
+                @:$("#modalForm").show();
+                @:$("#panelCasa").show();
+                @:$("#panelVisitante").hide();
+            }
+        }
+
+
+        $("[data-dismiss='modal']").click(function () {
+
+            $("body").removeClass("modal-open");
+            $("#modalForm").hide();
+            $("#nocasa").val("");
+            $("#domicilio").html("");
+            document.getElementById("regExpress").reset();
+        });
+
+
+
+        $("form#regExpress").submit(function (e) {
+            
+            $("#nombrevisitante").val($("#nombrevisitanteAux").val());
+            $("#marca").val($("[name='marcaAux']").val());
+            $("#submarca").val($("#submarcaAux").val());
+            $("#color").val($("#colorAux").val());
+
+                    if ($("#messagePhoto").css("display") == "none")
+                    {
+                        $(".alertmodal").hide();
+                        $(".alertmodal").show();
+                        $("#messModal").html("Debe capturar las fotografías del visitante antes de registrarlo.");
+                        return false;
+                    }
+
+            if (myTrim($("#placa").val()).length < 4 || myTrim($("#placa").val()).length > 10) {
+                $(".alertmodal").hide();
+                $(".alertmodal").show();
+                $("#messModal").html("Número de placa erroneo, capture otra vez! Si la visita ingresa sin automovil escriba \"caminando\" en el campo PLACA!");
+                return false;
+            }
+
+
+            if (myTrim($("#placa").val()).toLowerCase() == "caminando") {
+                $("[name='marcaAux']").val("");
+                    $("#submarcaAux").val("");
+                    $("#colorAux").val("")
+            }
+            else {
+                if (myTrim($("[name='marca']").val()).length < 2 || myTrim($("#submarca").val()).length < 1 || myTrim($("#color").val()).length < 4) {
+                    $(".alertmodal").hide();
+                    $(".alertmodal").show();
+                    $("#messModal").html("Debe capturar Marca, Submarca y Color del vehiculo!");
+                    return false;
+                }
+
+            }
+
+                    if (myTrim($("#nombrevisitanteAux").val()).length < 10) {
+                $(".alertmodal").hide();
+                $(".alertmodal").show();
+                $("#messModal").html("Nombre del visitante erroneo, capture otra vez!");
+                return false;
+            }
+
+        });
+        $("#placa").change(function () {
+            if (myTrim($("#placa").val()).toLowerCase() == "caminando") {
+                $("[name='marcaAux']").val("");
+                    $("#submarcaAux").val("");
+                    $("#colorAux").val("")
+            }
+        });
+
+        $("#nocasa").keypress(function (e) {
+            if (e.which == 13) {
+                $(".siguiente").trigger("click");
+            }
+        });
+
+
+        $(".siguiente").click(function () {
+            let nocasa;
+            nocasa = $("#nocasa").val();
+            nocasa = myTrim(nocasa);
+            $("#nocasa").val(nocasa);
+
+            $(".alertmodalcasa").hide();
+            $("#overlaycasa").show();
+
+            if ($(".calle").val() == 0) {
+                $("#overlaycasa").hide();
+                $(".alertmodalcasa").show();
+                $("#messModalcasa").html("Debe seleccionar una calle!");
+                return false;
+            }
+
+            if (myTrim($("#nocasa").val()).length < 3) {
+                $("#overlaycasa").hide();
+                $(".alertmodalcasa").show();
+                $("#messModalcasa").html("Número de casa es incorrecto!");
+                return false;
+            }
+
+
+
+            $("#placa").val("");
+            $("#placa").removeAttr("disabled");
+                    $("[name='marcaAux']").removeAttr("disabled");
+                    $("#submarcaAux").removeAttr("disabled");
+                    $("#colorAux").removeAttr("disabled");
+            $(".autocomplemento").show();
+            document.getElementById("regExpress").reset();
+            ///////////
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/data/PropiedadEstatus/' + nocasa + '/' + $(".calle").val(),
+                contentType: "application/json",
+                headers: { "Authorization":"bearer @Session["tk"].ToString()"}
+                }).done(function (data) {
+                    var json = $.parseJSON(data);
+                    var propiedad = json["respuesta"][0];
+                    var amonestacion = json["respuesta"][1];
+                    var permitir = json["respuesta"][2];
+                    var mensaje = json["respuesta"][3];
+
+                    $("#domicilio").html(" - " + propiedad.calle + " #" + propiedad.numero);
+                    $(".alertmodalestado").removeClass("alert-danger");
+                    $(".alertmodalestado").removeClass("alert-info");
+                    $(".alertmodalestado").removeClass("alert-warning");
+                    if (permitir === "no")
+                    {
+                        $(".alertmodalestado").css("display", "block");
+                        $(".alertmodalestado").addClass("alert-danger");
+                        $("#messModalestado").html(mensaje);
+                    }
+
+
+                    $("#casa").val($("#nocasa").val());
+                    $("#estado").val(propiedad.estado);
+                    $("#convenio").val(permitir);
+                    $("#mensaje").val(mensaje);
+                    $("#direccion").val(propiedad.calle);
+                    $("#idcasa").val(propiedad.id);
+
+                    $("#overlaycasa").hide();
+                    $("#panelCasa").hide();
+                    $("#panelVisitante").show();
+                    $("[name='numeroid']").focus();
+                    
+
+                }).fail(function (e) {
+                    $("#overlaycasa").hide();
+                    $(".alertmodalcasa").show();
+                    $("#messModalcasa").html(e.responseJSON||"Falla al obtener información de la propiedad!");
+                    console.log(e.responseText);
+                });
+
+            });
+
+            $(".atras").click(function () {
+                document.getElementById("regExpress").reset();
+                $("#domicilio").html("");
+                $("#panelCasa").show();
+                $("#panelVisitante").hide();
+                $('[role="document"]').css("width","900px");
+            });
+
+
+
+            $("[name='marca']").change(function () {
+                if ($(this).val() == "MOTOCICLETA") {
+                    $("#submarca").val($(this).val());
+                }
+                else
+                {
+                    $("#submarca").val("");
+                }
+            });
+        })
+                </script>
